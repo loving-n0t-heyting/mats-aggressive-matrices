@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mat's Aggressive Matrices</title>
+    <style>
+
+button {
+border: none;
+outline:none;
+padding: 10px;
+}
+
+button:hover {
+border: none;
+outline:none;
+padding: 10px;
+}
+
+button:active {
+border: none;
+outline:none;
+padding: 10px;
+}
+
+button:focus {
+border: none;
+outline:none;
+padding: 10px;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+figcaption {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-size: small;
+}
+
+.matrix {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: center;
+  gap: 2px;
+  padding: 15px;
+}
+
+.matrix div {
+  border: 5px groove black;
+  font-size: 30px;
+  text-align: center;
+}
+
+.solutions {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  justify-content: center;
+  gap: 2px;
+  padding: 15px;
+}
+
+.solutions div {
+  border: 5px groove black;
+  font-size: 30px;
+  text-align: center;
+}
+
+.tutorialcontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttoncontainer {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(4, 50px);
+  grid-auto-columns: 50px;
+  justify-content: center;
+  background-color: darkslategrey;
+  gap: 2px;
+}
+
+.container BUTTON {
+border: 10px;
+padding: 20px;
+}
+    </style>
+  </head>
+<body style="background-color: lightgray;">
+
+<h1 id="header" style="font-size: 65px; text-align: center; ">Credits</h1>
+
+<div style="margin-left: 20%; margin-right: 20%;">
+
+<p>
+  The preceding "test," somewhat facetiously styled after John Raven's famous matrices, is intended for several purposes. Partly it is a form of aesthetic indulgence: I have long been partial to the look and feel of certain psychometric instruments, of which Raven's matrices are one example and eponymous blocks from the <a href="https://en.wikipedia.org/wiki/Block_design_test">WAIS Block Design</a> are another, and this was an opportunity to dabble in it as a sort of artform. While I am suspicious of many of the scholarly, social, and political ends to which such instruments are often put, the twin pressures of utilitarian austerity (as a scientific tool) and practical functionlessness (to gauge putative purely abstract and general abilities in the subject) to my mind result in products with a certain playful, crystalline quality to them. I am unsure how widely shared this aesthetic sense is, but I expect at least some others will be familar with the sensation to which I am pointing. I hope, in some degree, to have replicated that sensation here.
+</p>
+
+<p>
+  The test is also meant, as those in my social circles will most likely already have surmised, as a sort of "fan art" homage to nostalgebraist's great Christmas novel, <a href="https://archive.transformativeworks.org/works/60930670/chapters/155645158"><i>The Apocalypse of Herschel Schoen</i></a>. Raven's matrices appear both as an early plot point and a recurring thematic motif throughout the novel, in ways with which this test's questions in particular are meant to resonate. If you would like a better sense of the intended resonance, you should check out the book!
+</p>
+
+<figure>
+<img src="./WAIS_blocks.jpg" width=400>
+<figcaption>My treasured WAIS Block Design blocks</figcaption>
+</figure>
+
+<p>
+  Primarily and for the most part, however, the test is intended as a way to teach, play with, and better understand the celebrated and sublime <b>Witt Geometry</b> (or <b>Witt design</b>) and its automorphism group, the sporadic simple group <em>M<sub>24</sub></em>, as well as its sub-geometries whose corresponding automorphism groups are the other, smaller <b>Mathieu groups</b> (hence the name of the exam!) <em>M<sub>n</sub></em> (for 7 &lt; <em>n</em> &lt; 13, 19 &lt; <em>n</em> &lt; 24). This geometry, together with its group of symmetries, is the remarkable something to which I alluded in the introductory text for the last problem.
+</p>
+
+<p>
+  The lack of mathematical jargon in the presentation of the test itself is deliberate. Particularly among those who still carry the shame wastefully inflicted upon them by a poor childhood mathematics education, the presence of mathematical jargon or symbolism often acts as a deterrent. But, even more importantly, it can obscure the true nature of the content being presented. It fosters an illusion that the technical language is the <em>real</em> phenomenon of deep interest, and that the thing experienced directly in playing through the puzzles is a comparatively inauthentic manifestation of an underlying set of equations or formal sentences. But in cases like this test it is precisely the opposite way around: it is navigating the puzzle that affords what immediate access there is to be had to the object under consideration, of which technical presentations are relatively detached accounts. While there are gains to be made in rigour and reproducibility in a formal presentation of the same subject matter, they trade off (just as with other scientific descriptions of terrain, organisms, <em>vel sim.</em>) against the immediacy available through playing with it. Still, now that you have some mastery over the puzzles, it will help to introduce a few introductory concepts in group theory in order to appropriately situate the objects at hand in their august position relative to the surrounding combinatoric landscape.
+</p>
+
+<hr>
+
+<p>
+  There are at least three ways to introduce the concept of a group. First, one may consider a group as a set of objects together with a binary operation satisfying a few simple axioms, or as a model of a certain small list of equations. That is, one may consider groups as a <em>variety of algebras</em>. Second, one may consider them as classes of permutations on an object, subject to certain closure conditions. In this case, groups appear as certain <em>function spaces</em> with identical domain and codomain, called <em>permutation groups</em>. Finally, one may consider a group as the class of automorphisms on an object endowed with a certain structure, i.e. transformations of the object that preserve its structure. If so, then groups are naturally thought of as the <em>systems of symmetry</em> for structured objects. The three approaches are only notionally different: provably, a group considered under any one of these guises is equivalent to a group under either of the others. But, as notional differences, they approach the shared concept from different angles.
+</p>
+
+<p>
+  As definitions, the three are given in descending order of <em>prima facie</em> generality. It is trivial to show that any class of automorphisms will be a permutation group, and that any permutation group will be a group <em>simpliciter</em>. The reverse inclusions are, while fairly elementary results, nevertheless not entirely trivial exercises. In rigorous pedagogical contexts, therefore, the algebraic approach is usually taken as canonical in the order of definitions. In the order of motivations, however, the positions are inverted. It is the concept of symmetry, and the coordinate concept of an automorphism, that lends interest to the other two. The closure conditions for a permutation group naturally emerge as requirements on anything qualifying as a system of symmetry, and the axiomatic definition of a group as an abstract formalisation of appropriately closed classes of permutations. We will therefore consider the three approaches as stated in reverse order.
+</p>
+
+<p>
+  The most familiar form of symmetry (how most of us probably learned the word) is the bilateral reflectional symmetry exhibited by, say, an inkblot diagram. The inkblot test is symmetric about a certain axis, which is to say that it can be reflected across that axis while preserving its structure. Thus there is a transformation, an <em>automorphism</em>, to which its structure is indifferent. Of course, not all such transformations one could induce in the inkblot diagram would preserve this structure. Reversal along its horizontal axis, or either diagonal axis, for example, would fail to do so. Even more radically, a random reassignment of the points in the diagram would clearly destroy the structure. The class of structure-preserving transformations of the inkblot is thus very limited: there is exactly one such (reflection along the vertical axis), and performing the transformation twice in a row will "cancel out" to the original distribution of points.
+</p>
+
+<figure>
+<img src="./rorschach-blot-1.jpg" width=400>
+<figcaption>An example of a very simple symmetry</figcaption>
+</figure>
+
+<p>
+  To get a bit clearer on this idea of structure and its preservation, it will help to consider objects which are symmetric in somewhat more expansive ways. As the degenerate limit, there is a mere set, a totally unstructured collection of points. The only structure-like trait it possesses is its <em>cardinality</em>, the number of points it contains. The automorphisms of a set are thus <em>all</em> the permutations (or scramblings, or reassignments, or bijective endofunctions) of the set, which will preserve that cardinality. Beyond that, they never destroy structure on the set's part, for one cannot lose what one does not have to begin with.
+</p>
+
+<p>
+  As a less extreme example, consider a featureless cube. There is an intuitively clear notion of a structure-preserving transformation on the cube: they are its ninety-degree rotations in space, as well as sequences of such rotations performed one after the other. A cube thus altered is indistinguishable in respect of its shape from the cube unaltered. There are a few of things to note here. First, there is always a trivial, degenerate "transformation" on any object however asymmetric, that leaves it unaltered in this way, <em>viz.</em> the "identity transformation" of simply leaving it be. This corresponds to not moving or changing the cube at all, which will of course leave its shape intact. Second, the transformation must move a given point in the object to the former position of some other point, for otherwise it will clearly no longer be structurally indistinguishable from how it began. Turning the cube a mere forty-five degrees, for example, or shifting it up an inch, leaves it occupying a different space than it did before. Third, in assessing whether a transformation of an object ultimately changes its structure, it only matters how the object ends up at the <em>end</em> of the process. Thus, we can (indeed, should) for these purposes conflate transformations that wind up with the same end result. So, for example, two successive clockwise yaw rotations at right angles are the same for our purposes as two successive widdershins yaw rotations. Indeed, four successive rotations in any direction along any axis are all the same, for the effect they have on the cube's shape is but that of leaving the cube be. For that matter, continuously rotating the cube ninety degrees in a certain direction along a certain axis is no different, from this perspective, from disassembling the cube into its constitutive points and reassembling them as though the cube had simply been so rotated. All that matters is <em>where</em> those points end up, in relation to each other.
+</p>
+
+<p>
+  This gives us our first pass at a slightly more rigorous formulation of the concept of an automorphism. An automorphism of an object will be effectively equivalent to a certain <em>one-to-one function</em> from the points constituting the object to those same points. This identification of a transformation with its corresponding function is perfectly legitimate, since the function records all and only the information we care about: to which point's position under the transformation is a given point reassigned? And the function <em>f</em> will respect the structurally relevant relations of the object, so that for any such relation <em>R</em>, if point <em>x</em> bears <em>R</em> to <em>y</em>, say, <em>f</em>(<em>x</em>) will bear <em>R</em> to <em>f</em>(<em>x</em>). (The restriction to two arguments is simply for ease of statement: it should also respect structurally relevant relations of fewer or more arguments, such as in this case the triadic spatial relation of <em>x</em> being between <em>y</em> and <em>z</em>.) Thus, for example, since the rear upper left corner of the cube is connected by an edge to the fore left corner, so the point to which any sequence of rotations reassigns the rear upper left corner will be connected to the point to which it reassigns the fore upper left corner.
+</p>
+
+<p>
+  This is, as I just said, slightly exacter than vague talk of structural preservation, but only slightly. It still leaves us with the weasel words "structurally relevant", as applied to the relations respected by a transformation-function. The ambiguity involved here, however, is irreducible. Which relations among points in the cube are structurally relevant? It is, to some extent, an arbitrary matter of choice. Consider, for example, the relation of one point being to another point's left on the same face (from the point's perspective, oriented with a designated up-down axis). Is this relation structural? It depends on the purposes at hand. And different choices will give different verdicts as to the contents of the cube's automorphisms. If it gets counted as structural, then the automorphisms will, as we have been assuming, be just its right-angled rotations. If not, we will also need to include among its automorphisms mirror inversion along any of its axes, joined in sequences with the aforementioned rotations (these are sometimes known as <em>rotoflections</em>). These are two distinct groups, the rotational and full symmetry groups of the cube respectively, corresponding to slightly different structures defined on the same points, one slightly richer than the other.
+</p>
+
+<p>
+  The concept of symmetry, to which the idea of an automorphism gives more precise expression, is extremely ubiquitous. To any set of relations one might investigate among certain points or objects or entities, there will be a corresponding notion of a permutation respecting those relations, and thus of an automorphism. Hence the widespread use of the concept of a symmetry group throughout science and mathematics. But it is of more everyday significance as well. Symmetries&mdash;not just in terms of spatial rotoflections, but for any number of different types of transformation corresponding to different criteria of structural relevance&mdash;pervade familiar human (and animal) life. They shape our perceptions and thoughts, guide our schemes of conceptualisation and classfication, and in general take a leading role in whatever could plausibly be called intelligence. Hence the naturalness of their use in psychometric instruments designed to test ande study intelligence. Consider, for example, this simple Raven matrix.
+</p>
+
+<figure>
+<img src="./raven-example.jpeg" width=400>
+<figcaption>An unsolved Raven matrix</figcaption>
+</figure>
+
+<p>
+  The matrix, in essence, asks the suject to identify and track certain symmetries (in terms of internal quadrant structure) in the geometric object being altered across various transformations (scalings, rotations, and deformations). The solution is grasped by discerning both the essential structural features of the object preserved across the panes and the relations among the transformations in each pane. We will have a bit more to say about how this is done shortly.
+</p>
+
+<p>
+  What can we say about the permutations in the automorphism group of an object, considered simply as permutations? One feature we have already noted: they will always contain the trivial identity permutation, sending each point to itself. Second, because they are bijective functions <em>f</em>, one can always take their inverse, which for any <em>x</em> sends <em>f</em>(<em>x</em>) back to <em>x</em>. Since (<em>ex hypothesi</em>) the structure of the object remains the same before and after a transformation is applied to it, this inverse function will also be an automorphism. And, finally, since identity (including identity of structure) is transitive, chaining two (or more) automorphism functions together one after the other also preserves the structure, so that it is an automorphism too. These three conditions (containing the identity, closure under inversion, and closure under chaining or composition) are, in fact, the defining conditions of a permutation group.
+</p>
+
+<p>
+  It is still possible, however, to ascend one level of abstraction higher. Rather than considering the transformations as permutations, consider them simply as unspecified things, objects, or elements. In place of the specific operation of function composition, let there be some binary operation or other taking any ordered pair of these elements to another element, just as composing two permutations produces another permutation. This placeholder operation is called the <em>multiplication</em> operation on the elements of the group, and is usually represented by either the infix &bull; or + (so that the result of the operation as applied to the pair of elements (<em>a</em>, <em>b</em>) is denoted by <em>a</em>&bull;<em>b</em> or <em>a</em>+<em>b</em>) or, more commonly, mere concatenation (so that the same result is denoted by <em>ab</em>). The identity permutation will apply to a special element <em>e</em> (sometimes written as 1 or 0, depending on the infix notation used), such that, for any <em>x</em>, <em>ex</em> = <em>x</em> = <em>xe</em>. The inverse permutations mean every element <em>x</em> will have an inverse (or negative, or opposite) element <em>x</em><sup>-1</sup> or -<em>x</em> (again, depending on use of concatenation/&bull; or +). And, since composition of functions is associative, so is group multiplication: (<em>xy</em>)<em>z</em> = <em>x</em>(<em>yz</em>). This is the variety of groups, defined axiomatically: any set of elements, together with an operation obeying these requirements, is defined to be a group.
+</p>
+
+<p>
+  With this notation, of course, the most familiar sort of group will be the groups commonly thought of us as groups of number. The integers, rationals, real line, and complex plane (under addition in the first case, under either addition or multiplication in the others) all serve perfectly well. But these groups can be misleading, in that they possess certain important features not guaranteed among groups generally. The first is quite obvious: they are infinite, whereas many groups (like the symmetry groups discussed above of the inkblot test and featureless cube) are finite. It is possible to "shrink" the integers, for example, into finite form by considering the modular or "clock" addition of integers relative to some finite positive number <em>n</em>. <em>x</em>+<em>y</em> in this group's understanding of addition (for <em>x</em> and <em>y</em> smaller than <em>n</em>), will be the remainder of <em>x</em>+<em>y</em> (added normally) as divided by <em>n</em>. This process of shrinking, called <em>quotienting</em>, is of fundamental importance to the theory of groups.
+</p>
+  
+  <p>But even then, there is a deeper dissimilarity between the resulting "cyclic" group <em>C<sub>n</sub></em> (and the other "number" groups from above) and, say, the automorphism group of the cube. Multiplication (meaning, in this case, addition!) in the cyclic group is, like multiplication or addition of two integral, rational, real, or complex numbers, is <em>commutative</em>. That is, for any <em>x</em> and <em>y</em>, <em>x</em>+<em>y</em> = <em>y</em>+<em>x</em>: the order in which the elements are multiplied (added) is irrelevant. Consider, on the other hand, our cube. A ninety degree pitch multiplied (followed) by a ninety degree yaw is not equivalent to the same two rotations performed in reverse order&semi; if you wish to confirm this, try it on the nearest three-dimensional object yourself. Groups in which all pairs of elements commute with respect to group multiplication, called "abelian" groups, are very special. They admit of a particularly elegant theory, and their finite instances are exhaustively classified by a very simple-to-state theorem. They are also, for this very reason, a bit dull, as groups go.
+</p>
+
+<p>
+  Commutativity of elements plays a special role in the generation of Raven matrices. Using concatenation notation, the canonical form of a Raven matrix (with the solution omitted) is as follows.
+</p>
+
+<div class="matrix" id="canonical_matrix">
+
+<div class="tutorialcontainer" style="width: 100px; height: 100px;"><em>x</em></div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;"><em>b</em></div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;"><em>xb</em></div>
+
+<div class="tutorialcontainer" style="width: 100px; height: 100px;"><em>a</em></div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;"><em>y</em></div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;"><em>ay</em></div>
+
+<div class="tutorialcontainer" style="width: 100px; height: 100px;"><em>xa</em></div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;"><em>by</em></div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">?</div>
+
+</div>
+
+<p>
+  An element on the rightmost column is the product of its two rowmates, multiplied in the order in which they appear, <em>mutatis mutandis</em> for members of the lowermost row and their columnmates. The unsolved variable ? therefore admits of a solution iff <em>xaby</em> = <em>xbay</em>, which a trifling bit of grade school algebra will show obtains iff <em>ab</em> = <em>ba</em>. A Raven matrix, therefore, is defined by any pair of <em>arbitrary</em> group elements <em>x</em> and <em>y</em>, plus two <em>commuting</em> elements <em>a</em> and <em>b</em>. And so, given an arbitrary element of a given group plus a member of its <em>centraliser</em> (the elements in the group to commute with it), it is possible to generate a Raven matrix on the pattern of the above, given some suitable guise under which to represent the elements belonging to that group.
+</p>
+
+<figure>
+<img src="./loop-raven.png" width=400>
+<figcaption>To what familiar group does this matrix correspond, given that we know it satisfies the above canonical form?</figcaption>
+</figure>
+
+<p>
+  There are a couple more basic thoughts from group theory it will be helpful to understand to grasp the significance of <em>M<sub>24</sub></em>. First in the concept of a <em>homomorphism</em> between groups. Earlier we gave a definition of a function <em>f</em> "respecting" a relation: where <em>x</em> bears the relation to <em>x</em> (with both points in the domain of <em>f</em>), <em>f</em>(<em>x</em>) will bear it to <em>f</em>(<em>y</em>) (and similarly for relations of other adicities). This was given as part of a characterisation of automorphisms, bijective functions from a structure to itself that respect that structure's defining relations. But both these additional conditions can come apart from respect: a bijective relation-respecting function between two structures is an <em>isomorphism</em> between them, indicating similarity of (potentially quite abstract) shape&semi; and a non-bijective relation-respecting function from a structure to itself is an <em>endomorphism</em> on the structure, representing a way to "collapse" or "shrink" that structure while remaining the kind of structure that it is. An automorphism is thus an isomorphism that is also an endomorphism. A <em>homomorphism</em>, meanwhile, is a relation-respecting function between <em>any</em> structures, without any expectation of bijectivity. And a homomorphism between groups specifically is a function between groups respecting group multiplication: for such a function <em>f</em>, for any <em>x</em> and <em>y</em> in its domain, <em>f</em>(<em>x</em>&bull;<em>y</em>) = <em>f</em>(<em>x</em>)&bull;<em>f</em>(<em>y</em>). Along with groups themselves, homorphisms between them are the conceptual bedrock of group theory.
+</p>
+
+<p>
+  There is a particular sort of automorphism of groups, called an "inner" automorphism of a group, that is of widespread significance. This is the automorphism of <em>conjugation</em> by a given element <em>x</em> of that group, which we may denote by &#953;<sub>x</sub>, and it takes an element <em>y</em> to its "conjugate" <em>x<sup>-1</sup>yx</em>. A subset of a group's elements is called a <em>subgroup</em> when any pair of elements drawn from the subset multiply to another element in the subset, and a subgroup is called <em>normal</em> whenever it is closed under conjugation (that is, for any <em>x</em> in the overall group and any <em>y</em> in the subgroup, &#953;<sub>x</sub>(y) is also in the subgroup). (Conjugability of one element into another, it is worth noting, is an equivalence relation, as you can verify for yourself.) Normal subgroups are important, for it is only by its normal subgroups that a group can be "shrunk" or "divided" or "quotiented" as the integers under addition are shrunk to the addition clock with <em>n</em> notches by the subgroup of integers divisible by <em>n</em>. It is a fundamental fact that the image of a group under a homomorphism <em>f</em> is isomorphic (as a group) to the group as shrunk by the subgroup of its elements <em>f</em> takes to the identity element <em>e</em> (which always form a normal subgroup).
+</p>
+
+<p>
+  For any finite group <em>G</em>, there will always exist some chain starting at <em>G</em>, ending at the trivial group containing only <em>e</em>, with every member a normal subgroup of its predecessor contained no larger such subgroup (save for the predecessor itself, which is of course normal in itself). The penultimate subgroup will be <em>simple</em>: it will contain no normal subgroups besides itself and the trivial subgroup (much as a prime number contains no divisors save itself and one). The quotients of each nontrivial member of the sequence by its successor will be simple, too, and in fact there is a remarkable theorem relating such sequences to the simple finite groups, called the <em>Jordan-Holder theorem</em>. A given finite <em>G</em> may have a variety of these sequences, but for any such <em>G</em> the simple groups to occur as these quotients (including the penultimate sequence member, which is the same as its quotient by the trivial group) will always be the same, though they may appear in different orders. The finite simple groups, thus, are the building blocks of all finite groups, as again the primes are the building blocks of all the naturals. Decompose a finite group however you please, and you will still find it reduced to the same collection of simples whence it was built. These simple groups are the "atoms of symmetry," and their eventual painstaking exhaustive classification was among the great triumphs of the twentieth century.
+</p>
+
+<p>
+  We have now seen enough to have some sense of what groups <em>are</em>, and how they pertain to Raven-style puzzles <em>in general</em>. But what of <em>M<sub>24</sub></em> specifically, and its gradual disclosure over the course of this test?
+</p>
+
+<hr>
+
+<p>
+  <em>M<sub>24</sub></em> is fruitfully understood as the automorphism group of a certain finite structure, the aforementioned <b>Witt design</b>. The Witt design is a <em>Steiner system</em>, a special case of block designs. A Steiner system <em>S</em>(<em>t</em>, <em>b</em>, <em>n</em>) (<em>t</em> &le; <em>b</em> &le; <em>n</em>) is a finite set of <em>n</em> elements with a designated set of of subsets (the <em>blocks</em>) each of size <em>b</em>. The distinguishing feature of a Steiner system is that for any subset of size <em>t</em>, there is exactly one block contain the <em>t</em>-set. (Block systems generally admit exactly &lambda; blocks containg an arbitrary <em>t</em>-set, for some constant &lambda;&semi; Steiner systems are thus block systems with &lambda; = 1.) Steiner systems have several pleasant combinatorial properties&semi; for example, it is a straightforward exercise to verify that, for <em>0</em> &le; <em>s</em> &le; <em>t</em>, the number of blocks containing an <em>s</em>-set is constant for all such sets and known from the parameters provided in the type. Somewhat misleadingly, given the notation, neither existence nor uniqueness (up to isomorphism) is guaranteed for arbitrary <em>S</em>(<em>t</em>, <em>b</em>, <em>n</em>)&semi; for example, there is no Steiner system of type <em>S</em>(4, 5, 9) for straightforward combinatorial reasons, and the number of Steiner systems of type <em>S</em>(2, 3, 19) is <a href="https://pottonen.kapsi.fi/sts19/#KO">11,084,874,829</a>.
+</p>
+
+<p>
+  The most familiar Steiner system to many will likely be the famous Fano plane, a system of type <em>S</em>(2, 3, 7) which arises as the system of planes in a three-dimensional vector space over the 2-field. She is the unique Steiner system of that type, and admits of an elegant two-dimensional visual representation in terms of lines and points. She provides a useful frame of reference in orienting oneself to the concept of a Steiner system, and the reader may find it helpful to verify that e.g. she is is unique up to isomorphism. There is an obvious definition of a homomorphism, and more specifically an automorphism, on Steiner systems, given the structure endowed upon the system by its blocks. A function preserves the structure of the system by respecting the <em>b</em>-adic relation of "constituting a block", so that an automorphism of the system is a bijection on the system mapping blocks to blocks.
+</p>
+
+<figure>
+<img src="./Fano_plane.svg.png" width=400>
+<figcaption>The Fano plane</figcaption>
+</figure>
+
+<p>
+  The Witt design, named after the 20th century German algebraist Ernst Witt, is a Steiner system of type <em>S</em>(5, 8, 24)&semi; indeed, it is the unique such type (though the proof is rather more involved than that for the type <em>S</em>(2, 3, 7)). Its existence was discovered independently by Witt and Robert Carmichael in the 1930's, but strangely enough knowledge of its automorphism group dates back to the mid-19th century, when it was discovered non-geometrically as a permutation group on 24 points by... &Eacute;mile Mathieu, whose name it now bears!
+</p>
+
+<p>
+  <em>M<sub>24</sub></em> is of considerable interest both historically and intrinsically. It (and certain of its sister groups, discussed below) is a <em>sporadic</em> simple group, one not arising as an instance of a general pattern of such groups (such as, say, the cyclic groups <em>C<sub>p</sub></em> for <em>p</em> prime). The simple Mathieu groups were, in fact, the only known sporadic simple groups until the discovery of <em>J<sub>1</sub></em> by Zvonimir Janko in 1964, which inaugurated the great collective struggle to establish a complete classification of the finite simple groups. They are thus a good and historically prominent illustration of <em>exceptional</em> objects, mathematical objects with certain interesting properties to arise independently of any general patterns of similar such objects, whose ubiquity is especially strongly felt in the theory of finite groups.
+</p>
+
+<p>
+  <em>M<sub>24</sub></em> has another especially remarkable quality, of a purely mathematical sort. A <em>transitive</em> permutation group has, for any pair (<em>x</em>, <em>y</em>) of points in the domain of its permutations, at least one permutation taking <em>x</em> to <em>y</em>. (A <em>sharply</em> transitive permutation group, also called a <em>regular</em> permutation group, has <em>exactly</em> one such permutation in it.) Transitive permutation groups evince, in a sense, a particularly high level of symmetry in the object whose structure they define&semi; compare, for example, the (non-transitive) rotational symmetry group of a square (including the points in its sides) with that of a circle, or even that of <em>n</em> points (omitting any lines between them) arranged circularly as if the vertices on a regular <em>n</em>-gon. A structure preserved by a transitive permutation group is one thereby compatible with more freedom in how the object carrying that structure is manipulated.
+</p>
+
+<p>
+  This concept can be generalised. A permutation group is (sharply) <em>n</em>-transitive when, for any pair (<em>S</em>, <em>T</em>) of <em>n</em>-sized subsets of the domain of permutation, and any bijection <em>f</em> from <em>S</em> to <em>T</em>, there is (exactly) one permutation in the group to extend <em>f</em>, in that it agrees with <em>f</em> on the value assigned to any point in <em>S</em>. This is, clearly, a much stronger condition, one not satisfied for <em>n</em> &gt; 1 by the circle's rotational symmetry group. Indeed, for almost all natural numbers, the only finite permutation groups (up, as always, to isomorphism) to satisfy <em>n</em>-transitivity do so, as it were, quite boringly. They are the symmetric and alternating groups for suitably large <em>m</em>: the groups consisting of either all the permutations whatsoever on <em>m</em> elements or just the permutations achievable through an even number of two-point transpositions, respectively. A proper exposition of the alternating groups would take us too far afield now, but they are an interesting class in themselves. (All simple for <em>m</em> = 3 or &gt; 4, for one!) Nevertheless, given their existence and distinctness from the symmetric groups, their <em>n</em>-transitivity is equally obvious and boring as that of the latter class. It is easy for arbitrary permutations to preserve the relevant structure when that structure is so trivial and degenerate.
+</p>
+
+<p>
+  While this is so for nearly all natural numbers (in particular, for all past this point), it is <em>not</em> true in the case of 5. The Mathieu groups <em>M<sub>24</sub></em> and <em>M<sub>12</sub></em> (one of the "lesser" Mathieu groups to arise as a subgroup of <em>M<sub>24</sub></em> in its majesty, to which we shall turn shortly) are both 5-transitive, in the latter case sharply so, and indeed are unique in this among finite groups besides the aforementioned symmetric and alternating groups. (This result follows immediately and elegantly from a proof of the Witt design's uniqueness) The objects for which they are the automorphism groups (the Witt design and a certain Steiner group arising as a restriction of the Witt design) are thus, in a sense, the most symmetrical finite structures possible, discounting the degenerate, flat "structure" represented by the symmetric and alternating groups. Insofar as symmetry is associated with beauty and finitude with knowability, they may thus be the most beautiful objects we or anything else will ever know.
+</p>
+
+<p>
+  The Witt geometry, for any five of its constituent points, returns a unique <em>octad</em> to contain it. Holding fixed 1 &le; n &le; 4 of these points, therefore, for any 5 - <em>n</em> points the design (or rather, a restricted Steiner system to emerge thus from it) will return, respectively, a (restricted) block of size 8 - <em>n</em>. These restricted Steiner systems have their own automorphism groups, the Mathieu groups <em>M<sub>24 - n</sub></em> (in group theory parlance the <em>pointwise stabilisers</em> on the relevant <em>n</em>-sets). As the great Mathieu group is 5-transitive, so must these be (5 - <em>n</em>)-transitive. In addition to the pointwise stabiliser on these subsets, of note is the <em>setwise</em> stabiliser on a given <em>dodecad</em>, i.e. the permutations not moving any point from out of the symmetric difference of two octads overlapping in two points. (The existence of such octad pairs is an elementary result in the theory of the Witt geometry.) Five points in the dodecad determine a unique <em>hexad</em>, or intersection of an octad with the dodecad. Thus we obtain a further restricted Steiner system <em>S</em>(5, 6, 12), with its automorphism group <em>M<sub>12</sub></em>. Restricting the resulting Steiner system and stabilising its automorphism in the same way as before yields the subgroups <em>M<sub>11</sub></em>, <em>M<sub>10</sub></em>, <em>M<sub>9</sub></em>, and <em>M<sub>8</sub></em>. We now have all the groups used to generate this test's Raven problems.
+</p>
+
+<p>
+  The further Mathieu groups are interesting in their own rights. <em>M<sub>23</sub></em> and <em>M<sub>11</sub></em>, for example, are the only (sharply) 4-transitive finite groups (besides the symmetric and alternating groups). <em>M<sub>n</sub></em> is simple for 23 &le; <em>n</em> &le; 21 and 12 &le; <em>n</em> &le; 11 (albeit for <em>n</em> = 21 not sporadically so). Even the non-simples are of interest, though. the least of them, <em>M<sub>8</sub></em>, is isomorphic to the <a href="https://en.wikipedia.org/wiki/Quaternion_group">quaternion group <em>Q<sub>8</sub></em></a>, which is of both practical technological interest for its use in the representation of three-dimensional rotations and of more rarefied intellectual interest for its role in the classification of "Hamiltonian" groups (non-abelian groups with all subgroups normal). 
+</p>
+
+<hr>
+
+<p>
+  As obliquely indicated in the flavour text of the test itself, the problems interleave the presentation of the smaller (<em>M<sub>8</sub></em> through <em>M<sub>12</sub></em>) and larger (<em>M<sub>20</sub></em> through <em>M<sub>24</sub></em>), so that the sharply and dully <em>n</em>-transitive groups (for 1 &le; n &le; 5) are shown as a pair one after the other, ascending from <em>n = 1</em> to the sublime <em>n = 5</em> over the course of the test. This is intended to ease the test subject into <em>M<sub>24</sub></em> in its fullness gradually throughought the experience, and leaven the monotony of simply destabilising <em>M<sub>8</sub></em> or <em>M<sub>20</sub></em> into <em>M<sub>12</sub></em> or <em>M<sub>24</sub></em> respectively point by point without stopping. How successful I here have been I would be delighted to hear.
+</p>
+
+<p>
+  Each problem, representing a given Mathieu group, is generated using a table for that Mathieu group containing a) a representative for each conjugacy class in the group, minus the trivial conjugacy class containing but <em>e</em>, b) for each such representative, its centraliser in the group, c) a set of generator elements for the group, such that each permutation in the group is the product of some string ("word" in the usual jargon) thereof, and d) for the entire group, which elements of the Witt design are "in play" and which are stabilised by it. The conjugate representatives are then shuffled, and the first three conjugated by random very long words in the generators, with the final such word being stored. These are assigned to the upper left, middle, and middle left panes, respectively. A member of the centraliser of the third representative is selected and random, and assigned to the upper middle pane after being conjugated by the stored word. This guarantees that the middle left and upper middle panes will represent commuting group elements. The remaining panes, including the lower right solution pane, have their corresponding elements generated as compositions of the other permutations in the natural way. The candidate solutions are generated similarly.
+</p>
+
+<p>
+  There are several advantages to this process. For one, the method of shuffling conjugacy representatives is far, far more computationally tractable than genuinely picking an element at random. <em>M<sub>24</sub></em> contains no fewer than 244,823,040 elements, so that a truly random choice would place a onerous burdens on at least one of either the processor, the file size, or my limited ingenuity as a programmer. The resulting process is biased, but that is a cost I am willing to bear. Indeed, in some ways it may not be a cost at all. One large factor in this bias is the uneven distribution of elements across conjugacy classes, in the case of <em>M<sub>24</sub></em> <a href="https://brauer.maths.qmul.ac.uk/Atlas/v3/spor/M24/">ranging</a> from 22,256,640 down to 11,385. But in my previous puzzle game, Permutation City Planning, where any load of the puzzle corresponded to a group element (of the symmetric group on six elements) chosen truly at random, the "overpopulation" of certain conjugacy classes over time left the game slightly more of a drag (in my personal experience) than really necessary. The "conjugacy shuffle" strategy thus seemed a fine fit for the task at hand.
+</p>
+
+<p>
+  Note the role of the centraliser for a given conjugacy representative in this process. This marks a major point of departure from Raven's matrices, for the groups on display in his test are overwhelmingly abelian, rendering the problem of commutativity for the middle left and upper middle panes moot. (John Raven seems to have had a particular penchant for the direct product of two copies of the Klein 4-group.) This is a minor practical advantage incurring a major aesthetic drawback, for he is depriving himself in so doing of the variety and novelty of non-abelian finite groups, represented perhaps most vividly in the sporadic simples like <em>M<sub>24</sub></em>. The present test is intended as a remedy to this artistic pusillanimity on Raven's original part.
+</p>
+
+<p>
+  The individual group elements are, of course, presented through the clickable interactive displays in each pane. For an element in the automorphism group of a Steiner system <em>S</em>(<em>t</em>, <em>b</em>, <em>n</em>), clicking on <em>t</em> distinct points in the geometry reveals simultaneously both a) their completing <em>b</em>-block and b) the block's image of that block under the associated automorphism. This method of representation was selected as a hopeful Goldilock's porridge bowl for the test subject, disclosing neither too much nor too little about the automorphism. Enough information needed to be given, obviously, to enable the player to pin down the automorphism with alittle bit of work. But to simply exhibit it as the permutation that it is, of which there were several methods possible, would spoil the fun. For then the subject could simply "discover" that they needed to compose the appropriate sequence of permutations, and the test would force them to discover nothing more about the Mathieu group (or one of its lesser cousins) than the banal fact that it is a subgroup of a finite symmetric group. The enchanting block design structure, with its anomalous symmetricality, could then go tragically unheeded by even the adept subject. The method chosen seemed an appropriate middle path.
+</p>
+
+<hr>
+
+<p>
+  One final point I would like to make about the Witt design and its associated Mathieu group. It would be tempting, given the character of the preceding remarks, to assume that the interest of <em>M<sub>24</sub></em> and its cousins is (barring incidental connections such as through <em>M<sub>8</sub></em>'s isomorphism to <em>Q<sub>8</sub></em>) more or less entirely aesthetic-cum-academic. The structure and its system of symmetries does indeed have much to recommend itself in these "purer" capacities. But there is at least one noteworthy historical instance of the theory of the structure achieving practical application.
+</p>
+
+<p>
+  To see this, it will be necessary to slightly alter our perspective on the Witt design. Up to now, we have described it primarily as a combinatorial object consisting of designated subsets on an underlying 24-set of points. But it can instead equally well be considered as a <em>subspace</em> of a 24-dimensional vector space over the 2-field under a chosen basis. Subsets of the geometry become points (or vectors) in the vector space, and a bijection between the basis elements and the points of the Witt design will assign a subset of the latter to that vector which is the sum of the basis vectors in the image of the subset. The subspace in question is that generated under summing by the image vectors of the octads, corresponding to the closure of the set of 759 octads in the Witt design under symmetric difference. Such a subspace is known as a <em>code</em>, and its vectors as <em>codewords</em>. The name is appropriate, for represented as strings in binary these codewords can clearly be assigned content as vehicles of communication. As you might expect given this role, there is more to the code than its shape <em>qua</em> vector space. Automorphisms of the code, in particular, preserve not just linear structure but "weight" (equivalently: number of nonzero vector coordinates, 1-norm of the vector, cardinality of the preimage subset). The code in question is known as the <em>(extended binary) Golay code</em>, after the Swiss scientist Marcel Golay, and its automorphism group is our friend <em>M<sub>24</sub></em>.
+</p>
+
+<p>
+  One crucial feature of the Witt geometry, already fundamental from a combinatoric point of view, becomes absolutely pivotal once viewed from this code theoretic lens. To wit, <em>any two octads will overlap in at least four points, when they are not entirely disjoint</em>. This fact is highly useful in the derivation of the geometry's basic algebraic qualities, but under the guise of the injection of the Witt design's powerset into the 24-dimensional 2-space, it becomes the fact that <em>the minimum weight of a codeword is eight</em>, an exceptionally high such weight. This is of practical relevance, for corruption in a message transmitted in a code is recoverable in proportion to this minimum weight, making codes with minimum weight highly desirable in conditions where messages will be liable to serious degradation, such as when sent across very very long distances. And that is how the Witt geometry, whose symmetries are represented algebraically by the Mathieu group, came to be used for the transmission of radio signals by the Voyager 1 & 2 probes back to Earth.
+</p>
+
+<figure>
+<img src="./voyager.jpeg" width=400>
+<figcaption>As contents aboard the probes go, I am partial to Beethoven's String Quartet No. 13, <br>but the Witt geometry is a solid runner-up :)</figcaption>
+</figure>
+
+<p>
+  It is sometimes observed that studying exceptional finite structures, like the Witt design and Mathieu groups, can have the feel of making theoretical contact with an alien, more-than-human force. The word "sublime" is sometimes used in this context. It is thus perhaps especially fitting that one such structure found a place in the concrete, practical how-to of the human scientific community's attempts to contact alien life in a more literal fashion.
+</p>
+
+<hr>
+
+<p>
+  This project was made possible through several wonderful group theory resources. The <a href="https://brauer.maths.qmul.ac.uk/Atlas/v3/">ATLAS of Finite Groups</a> was a handy reference for basic information on the relevant groups, and Richard Curtis' delightful 2025 volume <i>The Art of Working with the Mathieu Group M<sub>24</sub></i> was very useful as a more in depth resource. It was this latter that I used to code a computerised version of the Miracle Octad Generator, a device for representing, identifying, and completing octads in <em>M<sub>24</sub></em>. Indeed, I used the original analog MOG as a basis for this, rather than deriving the MOG mechanically from Conway's "hexacode", more than anything owing to the limitations of JavaScript as a programming language. In this I was also inspired by <a href="https://xenon.stanford.edu/~hwatheod/mog/mog.html">a similar project of Theodore Hwa</a>, though close examination of the code reveals a radically different approach to the octad-completing algorithm on our parts.
+</p>
+
+<p>
+  Computations at various points relied on the GAP (Groups Algorithms Programming) libraries and language, an invaluable and open resource for anyone interested in the theory of groups.
+</p>
+
+<hr>
+
+<p>
+"Mat's Aggressive Matrices" © 2026 by <a href="https://loving-n0t-heyting.itch.io/">loving-n0t-heyting</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
+<br>
+The public internet belongs to all who live on it
+</p>
+
+<hr>
+
+<p style="color: rgb(172, 2, 2); text-align: center; ">
+  Ho ho ho!
+</p>
+</body>
+</html>
