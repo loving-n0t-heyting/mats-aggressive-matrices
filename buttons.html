@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mat's Aggressive Matrices</title>
+    <style>
+
+button {
+border: none;
+outline:none;
+padding: 10px;
+}
+
+button:hover {
+border: none;
+outline:none;
+padding: 10px;
+}
+
+button:active {
+border: none;
+outline:none;
+padding: 10px;
+}
+
+button:focus {
+border: none;
+outline:none;
+padding: 10px;
+}
+
+.matrix {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: center;
+  gap: 2px;
+  padding: 15px;
+}
+
+.matrix div {
+  border: 5px groove black;
+  font-size: 30px;
+  text-align: center;
+}
+
+.solutions {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  justify-content: center;
+  gap: 2px;
+  padding: 15px;
+}
+
+.solutions div {
+  border: 5px groove black;
+  font-size: 30px;
+  text-align: center;
+}
+
+.tutorialcontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttoncontainer {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(4, 50px);
+  grid-auto-columns: 50px;
+  justify-content: center;
+  background-color: darkslategrey;
+  gap: 2px;
+}
+
+.container BUTTON {
+border: 10px;
+padding: 20px;
+}
+    </style>
+  </head>
+<body style="background-color: lightgray;">
+
+<h1 id="header" style="font-size: 65px; text-align: center; ">Mat's Aggressive Matrices</h1>
+
+<p style="margin-left: 20%; margin-right: 20%;" id="matrixInstructions">
+  This is a short (ten-question) test in logical thinking and pattern recognition, modelled after <a href="https://en.wikipedia.org/wiki/Raven%27s_Progressive_Matrices">Raven's Progressive Matrices</a>. Like Raven's, the subject taking the test is presented with a matrix (in our case, always 3x3) of bits in a pattern. One bit, in the lower left corner, is always missing. The test-taker is to mark the bit among those displayed in the two rows beneath the matrix that fits the pattern, of which there is always exactly one. Several of the problems presented here, as a warning, are tougher than any of John Raven's originals, and concern rather more intricate and subtle patterns.
+  <br><br>Marking the correct answer will allow you to proceed, while marking an incorrect answer will prompt the test to indicate both your failure and the correct answer. You will be given the opportunity after mis-marking an answer to retry, with the presentation of the pattern superficially altered and a new array of candidate completions offered below the matrix presentation. No score is recorded or intended&semi; success is constituted by eventual correct answers in each problem, and failure by inability to so complete the test.
+  <br><br>A trivial example problem, to orient you to the nature of the test, is provided below. You will find the correct answer already indicated.
+  <br><br>Good luck.
+</p>
+
+<div class="matrix" id="test_matrix">
+
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">&bull;</div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">&bull;&bull;</div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">&bull;&bull;&bull;</div>
+
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">&bull;<br>&bull;</div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">&bull;&bull;<br>&bull;&bull;</div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">&bull;&bull;&bull;<br>&bull;&bull;&bull;</div>
+
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">&bull;<br>&bull;<br>&bull;</div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">&bull;&bull;<br>&bull;&bull;<br>&bull;&bull;</div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">?</div>
+
+</div>
+
+<p id="markInstructions" style="text-align: center;">The correct answer is marked in green.<br>You may click here to proceed.</p>
+
+<div class="solutions" id="test_solutions">
+
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">&bull;&bull;&bull;&bull;<br>&bull;&bull;&bull;&bull;</div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">&bull;&bull;<br>&bull;</div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">&bull;<br>&bull;&bull;<br>&bull;&bull;&bull;</div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">&bull;&bull;&bull;&bull;&bull;</div>
+
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">&bull;&bull;&bull;<br>&bull;&bull;<br>&bull;&bull;&bull;</div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px; background-color: lightgreen;">&bull;&bull;&bull;<br>&bull;&bull;&bull;<br>&bull;&bull;&bull;</div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">&bull;&bull;<br>&bull;&bull;&bull;<br>&bull;&bull;</div>
+<div class="tutorialcontainer" style="width: 100px; height: 100px;">&bull;&bull;&bull;<br>&bull;&bull;<br>&bull;</div>
+
+
+</div>
+
+<script type="module">
+
+import { m24, m23, m22, m21, m20, m12, m11, m10, m9, m8 } from "./mathieuGroups.js"
+const theGroups = [m8, m20, m9, m21, m10, m22, m11, m23, m12, m24]
+var groupCounter = 1
+
+//REPRESENTING THE MOG
+
+const moggle01 = {"brickTetrads":[[0,4,6,7],[1,2,3,5]],"specialTetrads":[[8,13,19,22],[16,21,11,14],[10,15,17,20],[9,12,18,23]]}
+
+const moggle02 = {"brickTetrads":[[0,4,2,3],[1,5,6,7]],"specialTetrads":[[8,13,18,23],[11,14,17,20],[10,15,16,21],[9,12,19,22]]}
+
+const moggle03 = {"brickTetrads":[[0,1,2,3],[4,5,6,7]],"specialTetrads":[[8,9,10,11],[16,17,18,19],[12,13,14,15],[20,21,22,23]]}
+
+const moggle04 = {"brickTetrads":[[0,1,6,7],[2,3,4,5]],"specialTetrads":[[8,9,14,15],[20,21,18,19],[10,11,12,13],[16,17,22,23]]}
+
+const moggle05 = {"brickTetrads":[[0,5,3,7],[1,2,4,6]],"specialTetrads":[[8,9,18,19],[20,21,14,15],[10,11,16,17],[12,13,22,23]]}
+
+const moggle06 = {"brickTetrads":[[0,5,2,6],[1,3,4,7]],"specialTetrads":[[8,9,22,23],[16,17,14,15],[12,13,18,19],[10,11,20,21]]}
+
+const moggle07 = {"brickTetrads":[[0,4,5,6],[1,2,3,7]],"specialTetrads":[[8,15,18,21],[11,12,17,22],[10,13,16,23],[9,14,19,20]]}
+
+const moggle08 = {"brickTetrads":[[0,4,1,2],[3,5,6,7]],"specialTetrads":[[8,15,17,22],[16,9,14,23],[10,13,19,20],[11,12,18,21]]}
+
+const moggle09 = {"brickTetrads":[[0,5,2,7],[1,3,4,6]],"specialTetrads":[[8,13,10,15],[16,21,18,23],[17,19,20,22],[9,11,12,14]]}
+
+const moggle10 = {"brickTetrads":[[0,1,5,6],[2,3,4,7]],"specialTetrads":[[8,10,17,19],[13,15,20,22],[12,14,21,23],[9,11,16,18]]}
+
+const moggle11 = {"brickTetrads":[[0,3,6,7],[1,2,4,5]],"specialTetrads":[[8,10,21,23],[13,15,16,18],[12,14,17,19],[9,11,20,22]]}
+
+const moggle12 = {"brickTetrads":[[0,5,6,7],[1,2,3,4]],"specialTetrads":[[8,12,16,20],[10,14,18,22],[9,13,17,21],[11,15,19,23]]}
+
+const moggle13 = {"brickTetrads":[[0,4,1,3],[2,5,6,7]],"specialTetrads":[[8,14,19,21],[9,15,18,20],[10,12,17,23],[11,13,16,22]]}
+
+const moggle14 = {"brickTetrads":[[0,4,5,7],[1,2,3,6]],"specialTetrads":[[8,14,17,23],[9,15,16,22],[10,12,19,21],[11,13,18,20]]}
+
+const moggle15 = {"brickTetrads":[[0,5,6,3],[1,2,4,7]],"specialTetrads":[[8,13,14,11],[16,19,21,22],[17,18,20,23],[9,10,12,15]]}
+
+const moggle16 = {"brickTetrads":[[0,2,6,7],[1,3,4,5]],"specialTetrads":[[8,11,17,18],[12,15,21,22],[13,14,20,23],[9,10,16,19]]}
+
+const moggle18 = {"brickTetrads":[[0,5,2,3],[1,4,6,7]],"specialTetrads":[[8,12,17,21],[10,14,19,23],[9,13,16,20],[11,15,18,22]]}
+
+const moggle17 = {"brickTetrads":[[0,1,5,7],[2,3,4,6]],"specialTetrads":[[8,11,21,22],[13,14,16,19],[12,15,17,18],[9,10,20,23]]}
+
+const moggle19 = {"brickTetrads":[[0,1,2,6],[3,4,5,7]],"specialTetrads":[[8,16,13,21],[10,15,18,23],[9,12,17,20],[11,14,19,22]]}
+
+const moggle20 = {"brickTetrads":[[0,1,3,7],[2,4,5,6]],"specialTetrads":[[8,13,17,20],[11,14,18,23],[9,12,16,21],[10,15,19,22]]}
+
+const moggle21 = {"brickTetrads":[[0,1,4,5],[2,3,6,7]],"specialTetrads":[[8,9,12,13],[18,19,22,23],[16,17,20,21],[10,11,14,15]]}
+
+const moggle22 = {"brickTetrads":[[0,4,3,6],[1,2,5,7]],"specialTetrads":[[8,9,16,17],[14,15,22,23],[10,11,18,19],[12,13,20,21]]}
+
+const moggle23 = {"brickTetrads":[[0,4,2,7],[1,3,5,6]],"specialTetrads":[[8,9,20,21],[14,15,18,19],[12,13,16,17],[10,11,22,23]]}
+
+const moggle24 = {"brickTetrads":[[0,1,6,3],[2,4,5,7]],"specialTetrads":[[8,12,18,22],[11,15,17,21],[10,14,16,20],[9,13,19,23]]}
+
+const moggle25 = {"brickTetrads":[[0,2,3,7],[1,4,5,6]],"specialTetrads":[[8,16,14,22],[11,13,19,21],[9,15,17,23],[18,10,12,20]]}
+
+const moggle26 = {"brickTetrads":[[0,1,2,5],[3,4,6,7]],"specialTetrads":[[8,20,14,18],[9,15,19,21],[10,12,16,22],[11,13,17,23]]}
+
+const moggle27 = {"brickTetrads":[[0,4,2,6],[1,3,5,7]],"specialTetrads":[[8,12,10,14],[17,21,19,23],[16,20,18,22],[9,11,13,15]]}
+
+const moggle28 = {"brickTetrads":[[0,4,1,7],[2,3,5,6]],"specialTetrads":[[8,16,10,18],[13,15,21,23],[12,20,14,22],[9,11,17,19]]}
+
+const moggle29 = {"brickTetrads":[[0,4,5,3],[1,2,6,7]],"specialTetrads":[[8,10,20,22],[13,17,15,19],[12,16,14,18],[9,11,21,23]]}
+
+const moggle30 = {"brickTetrads":[[0,1,2,7],[3,4,5,6]],"specialTetrads":[[8,12,19,23],[10,14,17,21],[9,13,18,22],[11,15,16,20]]}
+
+const moggle31 = {"brickTetrads":[[0,1,5,3],[2,4,6,7]],"specialTetrads":[[8,16,15,23],[10,13,18,21],[9,14,17,22],[11,12,19,20]]}
+
+const moggle32 = {"brickTetrads":[[0,2,6,3],[1,4,5,7]],"specialTetrads":[[8,15,19,20],[10,13,17,22],[9,14,18,21],[11,12,16,23]]}
+
+const moggle33 = {"brickTetrads":[[0,4,3,7],[1,2,5,6]],"specialTetrads":[[8,12,11,15],[17,18,21,22],[16,20,19,23],[9,10,13,14]]}
+
+const moggle34 = {"brickTetrads":[[0,4,5,2],[1,3,6,7]],"specialTetrads":[[8,16,11,19],[13,14,21,22],[9,10,17,18],[12,15,20,23]]}
+
+const moggle35 = {
+	brickTetrads : [ [0, 4, 1, 6], [2, 3, 5, 7] ], 
+	specialTetrads : [ [8, 20, 11, 23], 
+	[13, 17, 14, 18], 
+		[12, 16, 15, 19], [9, 10, 21, 22] ]
+}
+
+const MOGlist = [moggle01, moggle02, moggle03, moggle04, moggle05, moggle06, moggle07, moggle08, moggle09, moggle10, moggle11, moggle12, moggle13, moggle14, moggle15, moggle16, moggle17, moggle18, moggle19, moggle20, moggle21, moggle22, moggle23, moggle24, moggle25, moggle26, moggle27, moggle28, moggle29, moggle30, moggle31, moggle32, moggle33, moggle34, moggle35]
+
+const brickReps = ["!", "."]
+const specialReps = ["+", "-", "x", "o"]
+
+function representMoggle(moggle) {
+//Prints an ASCII illustration of a moggle in the console log; for dev use
+for (i = 0; i <4; i++) {
+ console.log(
+ [0, 1].map(n => brickReps[moggle["brickTetrads"].indexOf(moggle["brickTetrads"].find(t => t.includes(4*n + i)) )]).join(" ") 
+ + " | " + 
+ [2, 3, 4, 5].map(m => specialReps[moggle["specialTetrads"].indexOf(moggle["specialTetrads"].find(s => s.includes(4*m + i)) )]).join(" ") 
+ )
+} }
+
+
+const bodily1 = [23, 2, 5, 8, 22, 18, 14, 4, 10, 3, 15, 12, 0, 19, 13, 20, 21, 17, 7, 11, 1, 9, 16, 6]
+ 
+const bodily2 = [10, 3, 15, 12, 0, 19, 13, 20, 23, 2, 5, 8, 22, 18, 14, 4, 21, 17, 7, 11, 1, 9, 16, 6]
+ 
+const bodily3 = [21, 17, 7, 11, 1, 9, 16, 6, 23, 2, 5, 8, 22, 18, 14, 4, 10, 3, 15, 12, 0, 19, 13, 20]
+
+const brick1 = [23, 2, 5, 8, 22, 18, 14, 4]
+
+const brick2 = [10, 3, 15, 12, 0, 19, 13, 20]
+
+const brick3 = [21, 17, 7, 11, 1, 9, 16, 6]
+ 
+const bodilyPerms = [bodily1, bodily2, bodily3].map(b => inv(b))
+ 
+const bricks = [brick1, brick2, brick3]
+
+function findOctad(quintle) {
+//Takes a quintle (5-subset) (or any other subset!) and returns the (an) octad extending it, if any exists
+
+//CASE 1: Check if the quintle belongs to one of the three canonical brick octads; if so, return that brick
+for (let brick = 0; brick < 3; brick++) {
+	if (quintle.every(n => bricks[brick].includes(n)) ) {
+		return bricks[brick]
+			.toSorted((X, Y) => X - Y)}}
+//CASE 2: For each "bodily permutation," compare the quintle as interpreted under that permutation against each moggle to see if any contains an octad representation (union of a pair of brick tetrad and special tetrad representations) containing the quintle so interpreted; if so, return the octad of which that is a representation (under the bodily permutation in question)
+for (let bodily = 0; bodily < 3; bodily++) {
+	for (let moggle = 0; moggle < 35; moggle++) {
+		for (let normie_tetrad = 0; normie_tetrad < 2; normie_tetrad++) {
+			if ([0, 1, 2, 3, 4, 5, 6, 7]
+				.filter(w => quintle
+					.map(x => bodilyPerms[bodily][x])
+					.includes(w))
+				.every(y => MOGlist[moggle]["brickTetrads"][normie_tetrad]
+					.includes(y))) {
+				for (let speshul_tetrad = 0; speshul_tetrad < 4; speshul_tetrad++) {
+					if ([8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+						.filter(w => quintle
+							.map(x => bodilyPerms[bodily][x])
+							.includes(w))
+						.every(y => MOGlist[moggle]["specialTetrads"][speshul_tetrad]
+							.includes(y))) {
+						return (MOGlist[moggle]["brickTetrads"][normie_tetrad]
+							.map(z => inv(bodilyPerms[bodily])[z])
+							.concat(MOGlist[moggle]["specialTetrads"][speshul_tetrad]
+								.map(z => inv(bodilyPerms[bodily])[z])))
+							.toSorted((X, Y) => X - Y) 
+}}}}}}}
+
+const octadList = [[4,10,11,14,16,19,22,23],[0,10,11,13,16,18,20,23],[1,6,12,13,16,18,21,23],[4,9,12,13,14,21,22,23],[0,8,9,10,13,14,20,21],[1,6,8,10,14,16,19,21],[1,4,14,15,17,20,22,23],[0,1,4,5,10,13,17,20],[0,1,3,4,5,6,16,21],[0,3,4,6,7,14,22,23],[0,2,6,7,10,13,20,22],[1,2,6,15,16,20,21,22],[2,5,8,10,11,16,18,19],[3,11,12,15,16,18,19,23],[7,9,11,12,13,17,18,23],[2,5,8,9,12,13,18,21],[3,8,9,12,14,15,19,21],[7,8,9,10,11,14,17,19],[1,2,5,8,15,17,18,20],[1,3,4,5,12,15,17,19],[0,3,4,5,7,9,11,17],[0,2,3,5,6,7,8,18],[2,3,6,7,12,15,19,22],[2,7,9,11,15,17,20,22],[5,6,7,8,10,19,22,23],[0,6,7,10,12,15,18,23],[1,7,11,15,18,20,21,23],[1,5,8,12,13,17,22,23],[0,1,8,10,12,14,15,17],[0,1,3,7,8,11,14,21],[5,8,9,15,20,21,22,23],[0,4,5,9,10,12,15,21],[1,4,5,7,10,11,19,21],[0,3,5,8,11,16,22,23],[0,2,10,11,12,15,16,22],[1,2,7,11,12,13,21,22],[2,4,6,7,10,14,18,19],[3,6,7,13,18,19,20,23],[6,9,15,16,17,18,20,23],[1,2,4,12,13,14,17,18],[1,3,8,13,14,17,19,20],[0,3,6,8,9,14,16,17],[2,4,9,14,15,18,20,21],[3,4,5,9,13,19,20,21],[4,5,6,9,10,16,17,19],[0,2,3,4,11,14,16,18],[2,3,11,13,16,19,20,22],[2,6,9,12,13,16,17,22],[2,3,5,8,10,12,15,23],[2,5,7,8,11,17,21,23],[3,7,10,11,12,15,17,21],[0,2,5,8,13,19,20,23],[3,4,10,12,14,15,18,22],[4,7,11,14,17,18,21,22],[1,2,5,6,8,9,16,23],[1,3,6,9,10,12,15,16],[0,7,11,13,17,19,20,21],[0,4,13,14,18,19,20,22],[1,4,6,9,14,16,18,22],[0,1,6,9,13,16,19,20],[2,3,4,10,13,14,20,23],[2,4,6,14,16,17,21,23],[1,2,4,7,9,11,14,23],[1,3,7,9,10,11,13,20],[0,6,12,15,16,17,19,21],[0,2,4,12,14,15,19,23],[3,5,8,10,13,18,20,22],[5,6,8,16,17,18,21,22],[3,6,10,13,16,17,20,21],[1,5,7,8,9,11,18,22],[0,1,7,9,11,12,15,19],[0,5,8,12,15,18,19,22],[3,4,7,8,10,11,18,23],[2,7,10,11,12,19,20,23],[2,6,9,11,12,15,21,23],[1,4,8,9,13,18,20,23],[1,4,9,10,12,14,19,20],[0,4,6,9,11,14,19,21],[4,8,12,15,17,18,21,23],[5,8,10,12,17,19,20,21],[3,5,6,8,9,10,11,21],[0,4,6,8,16,18,19,23],[6,10,12,16,18,19,20,22],[6,9,11,13,18,20,21,22],[2,3,5,7,10,11,14,22],[0,2,3,7,11,13,15,23],[1,2,7,12,15,16,17,23],[1,2,5,9,13,14,20,22],[0,1,3,4,9,13,14,15],[0,1,4,7,14,16,17,19],[2,5,12,14,15,17,21,22],[0,3,5,8,13,15,17,21],[1,3,5,7,8,10,16,17],[0,2,5,6,14,16,19,22],[0,3,6,13,15,16,18,22],[1,7,13,16,17,18,20,22],[3,5,6,10,14,16,18,23],[2,6,10,13,15,16,19,23],[2,7,9,13,16,20,21,23],[5,13,14,17,18,20,21,23],[4,10,13,14,15,17,19,21],[3,4,7,9,10,14,16,21],[0,5,7,11,14,18,19,23],[7,10,11,13,15,18,19,22],[7,9,12,15,16,18,21,22],[1,5,9,12,14,15,18,23],[1,5,8,9,10,13,15,19],[0,5,7,8,9,16,19,21],[2,3,4,6,8,10,16,22],[0,2,3,6,12,16,20,23],[1,2,6,11,13,17,20,23],[2,4,8,13,17,20,21,22],[0,3,4,12,14,17,20,21],[1,3,4,6,10,11,14,17],[0,2,4,7,8,11,19,22],[0,3,7,11,12,18,20,22],[1,6,11,12,15,17,18,22],[1,2,4,8,9,12,15,22],[0,1,3,5,8,9,12,20],[0,1,5,6,8,11,17,19],[7,9,10,14,18,20,22,23],[0,4,7,9,10,13,19,23],[1,4,9,15,16,19,21,23],[0,12,14,16,17,18,22,23],[0,8,10,13,16,17,19,22],[1,3,8,9,13,16,21,22],[6,14,15,18,19,21,22,23],[0,5,6,10,13,18,19,21],[1,5,9,10,16,18,20,21],[1,3,11,13,14,18,22,23],[0,1,2,10,11,13,14,19],[0,1,2,9,12,14,16,21],[2,4,5,7,8,9,10,20],[3,4,7,9,12,15,20,23],[4,6,7,11,15,17,19,23],[0,2,4,5,8,12,16,17],[3,8,12,15,16,17,20,22],[3,6,7,8,11,13,17,22],[2,4,5,6,8,15,19,21],[3,5,6,12,15,18,20,21],[5,6,7,10,11,17,18,20],[1,2,3,4,5,8,11,13],[1,2,3,11,12,14,15,20],[0,2,6,7,11,12,14,17],[2,5,10,16,17,20,22,23],[0,3,4,10,15,16,17,23],[1,3,4,7,13,17,21,23],[2,3,5,6,13,21,22,23],[0,2,3,6,10,14,15,21],[1,2,7,10,14,17,20,21],[1,2,5,11,15,19,22,23],[0,1,3,5,10,11,15,18],[0,1,5,7,12,17,18,21],[0,2,5,7,9,12,22,23],[0,3,7,8,9,10,15,22],[1,7,8,15,17,19,21,22],[4,8,10,14,16,17,18,20],[4,12,13,16,17,19,20,23],[3,4,6,9,11,13,16,23],[3,4,6,8,13,14,18,21],[2,6,12,13,14,19,20,21],[2,6,9,10,11,14,16,20],[1,4,8,11,14,15,18,19],[1,5,11,12,13,18,19,20],[0,5,6,9,11,12,16,18],[0,4,7,8,9,12,14,18],[7,8,9,12,13,19,20,22],[6,8,9,11,15,16,19,22],[4,5,10,15,18,19,20,23],[4,5,6,7,9,18,21,23],[6,7,9,10,15,19,20,21],[1,4,5,11,16,17,18,23],[1,10,11,15,16,17,19,20],[0,3,6,7,9,12,13,21],[0,3,4,5,12,13,18,23],[2,8,10,14,15,19,20,22],[2,6,7,8,9,14,21,22],[1,2,8,11,14,16,17,22],[0,1,3,11,12,13,16,17],[0,2,3,8,12,13,14,22],[2,10,11,14,15,17,18,23],[3,5,10,11,13,17,19,23],[3,5,9,12,16,17,21,23],[1,2,14,16,18,19,20,23],[1,3,4,10,13,16,18,19],[0,4,9,13,16,17,18,21],[0,2,6,9,13,14,18,23],[3,6,9,10,13,14,19,22],[9,14,16,17,19,20,21,22],[2,3,7,12,14,18,21,23],[2,3,7,8,10,13,19,21],[2,8,9,10,15,16,17,21],[4,5,8,10,11,15,17,22],[0,5,11,12,15,17,20,23],[1,3,5,6,7,11,12,23],[1,4,5,8,16,19,20,22],[0,1,4,12,15,16,18,20],[0,1,4,6,7,11,13,18],[0,4,5,6,8,9,13,22],[0,6,9,12,14,15,20,22],[1,6,7,11,14,19,20,22],[3,4,5,7,8,12,21,22],[0,2,7,8,12,15,20,21],[1,2,6,7,8,10,11,15],[4,6,8,9,10,14,15,23],[5,6,9,10,12,13,20,23],[5,6,11,16,19,20,21,23],[4,7,8,14,19,20,21,23],[4,7,10,12,13,18,20,21],[4,6,10,11,15,16,18,21],[0,4,8,11,13,14,17,23],[10,11,12,13,14,17,20,22],[3,6,11,12,14,16,21,22],[1,3,4,8,12,14,16,23],[1,2,8,10,12,13,16,20],[0,2,6,8,11,13,16,21],[2,5,6,9,10,15,18,22],[0,3,5,6,9,15,19,23],[1,5,7,9,17,19,20,23],[2,5,7,18,19,20,21,22],[0,3,4,7,15,18,19,21],[1,4,7,9,10,15,17,18],[0,2,5,11,13,17,18,22],[0,3,11,14,15,17,19,22],[1,3,7,9,12,14,17,22],[1,2,3,5,12,16,18,22],[0,1,2,3,8,15,16,19],[0,1,2,7,8,9,13,17],[0,1,4,10,14,18,21,23],[1,10,13,19,20,21,22,23],[0,6,9,10,16,21,22,23],[4,7,13,14,15,16,18,23],[5,7,10,13,14,16,19,20],[5,6,9,13,14,15,16,21],[3,4,9,14,17,18,19,23],[2,9,10,13,17,18,19,20],[2,3,6,9,16,18,19,21],[4,6,11,12,14,18,20,23],[4,6,8,10,11,13,19,20],[4,6,8,9,12,16,20,21],[0,1,2,5,8,10,21,22],[0,1,3,12,15,21,22,23],[0,1,7,10,11,17,22,23],[2,5,7,8,13,15,16,22],[0,3,5,7,12,14,15,16],[1,5,7,11,13,14,15,17],[2,3,5,8,9,17,19,22],[0,2,3,9,12,15,17,18],[1,2,3,7,11,17,18,19],[2,5,6,8,11,12,20,22],[0,3,4,6,8,11,12,15],[1,4,7,8,11,12,17,20],[2,8,9,10,11,13,22,23],[0,3,9,10,11,12,14,23],[1,11,12,14,17,19,21,23],[1,2,3,7,8,20,22,23],[0,1,2,3,4,7,10,12],[0,1,2,4,11,15,17,21],[0,2,6,8,15,17,22,23],[0,3,5,6,10,12,17,22],[1,3,5,11,17,20,21,22],[2,8,12,16,19,21,22,23],[0,3,8,10,12,16,18,21],[1,8,10,11,13,17,18,21],[4,5,9,10,11,13,14,18],[9,11,13,14,15,19,20,23],[6,7,9,12,14,16,19,23],[1,3,4,5,7,14,18,20],[1,2,4,7,13,15,19,20],[0,2,4,6,7,9,15,16],[0,4,5,6,14,15,17,18],[5,6,13,15,17,19,20,22],[3,5,6,7,9,16,20,22],[4,5,12,14,16,18,19,21],[8,13,15,16,18,19,20,21],[6,7,8,9,10,13,16,18],[4,6,10,13,17,18,22,23],[0,6,10,14,17,19,20,23],[1,3,6,9,14,20,21,23],[3,4,16,18,20,21,22,23],[0,2,4,10,16,19,20,21],[1,2,4,6,9,10,13,21],[0,4,9,11,15,18,22,23],[0,5,9,10,11,19,20,22],[1,5,6,9,12,19,21,22],[1,4,7,12,18,19,22,23],[0,1,7,8,10,18,19,20],[0,1,6,8,9,15,18,21],[2,5,6,8,10,13,14,17],[3,6,12,13,14,15,17,23],[3,7,11,14,16,17,20,23],[2,3,5,8,14,16,20,21],[2,3,4,12,13,15,16,21],[2,4,7,10,11,13,16,17],[0,2,5,8,9,11,14,15],[3,5,9,11,12,13,15,22],[5,7,11,12,16,17,19,22],[1,2,5,7,8,12,14,19],[1,3,7,8,12,13,15,18],[0,7,8,11,15,16,17,18],[8,10,12,13,14,18,19,23],[8,9,11,14,16,18,21,23],[9,10,11,12,13,16,19,21],[1,6,7,8,14,17,18,23],[1,6,7,10,12,13,17,19],[0,3,9,11,15,16,20,21],[0,3,8,14,15,18,20,23],[2,4,5,10,12,13,19,22],[2,4,5,9,11,16,21,22],[1,2,4,5,6,7,17,22],[0,1,3,6,7,15,17,20],[0,2,3,4,5,15,20,22],[4,5,7,10,12,14,17,23],[7,8,10,13,15,17,20,23],[3,6,7,8,15,16,21,23],[0,4,5,9,14,16,20,23],[4,9,10,13,15,16,20,22],[4,6,7,13,16,19,21,22],[1,4,5,6,13,14,19,23],[1,6,10,13,14,15,18,20],[0,6,7,14,16,18,20,21],[3,4,5,11,14,15,21,23],[2,5,10,11,13,15,20,21],[2,5,6,7,10,12,16,21],[2,7,8,10,12,17,18,22],[0,3,7,8,12,17,19,23],[1,3,8,9,11,15,17,23],[0,2,8,9,16,18,20,22],[0,3,4,9,12,16,19,22],[1,4,9,11,13,17,19,22],[1,2,6,8,13,18,19,22],[0,1,3,6,12,14,18,19],[0,1,9,11,14,17,18,20],[2,3,8,11,15,18,21,22],[0,2,3,5,11,12,19,21],[1,2,5,9,10,11,12,17],[2,4,9,10,12,16,18,23],[3,8,9,10,16,19,20,23],[6,8,9,13,17,19,21,23],[2,4,11,13,18,19,21,23],[3,10,11,14,18,19,20,21],[6,9,10,12,14,17,18,21],[0,2,4,7,17,18,20,23],[3,4,7,10,17,19,20,22],[3,4,6,9,15,17,21,22],[1,2,3,4,6,15,18,23],[1,2,3,5,6,10,19,20],[0,2,5,6,9,17,20,21],[5,8,9,10,12,14,16,22],[0,8,9,12,13,15,16,23],[1,7,8,11,13,16,19,23],[5,8,11,13,14,19,21,22],[0,11,12,13,14,15,18,21],[1,7,10,11,12,14,16,18],[0,5,7,8,14,17,20,22],[0,4,7,12,13,15,17,22],[1,3,4,7,11,15,16,22],[1,3,5,6,8,14,15,22],[0,1,2,5,6,12,13,15],[0,1,2,5,7,11,16,20],[0,5,8,9,10,17,18,23],[9,10,12,15,17,19,22,23],[3,7,9,11,19,21,22,23],[5,6,8,11,13,15,18,23],[5,6,10,11,12,14,15,19],[5,7,9,11,12,14,20,21],[1,3,5,8,18,19,21,23],[1,2,10,12,15,18,19,21],[0,2,7,9,10,11,18,21],[5,7,8,12,16,18,20,23],[4,7,8,10,12,15,16,19],[4,7,8,9,11,13,15,21],[0,2,4,9,10,14,17,22],[0,3,9,13,17,20,22,23],[1,3,6,16,17,19,22,23],[2,4,6,11,13,14,15,22],[0,3,5,6,11,13,14,20],[1,5,6,12,14,16,17,20],[1,2,3,4,14,19,21,22],[0,1,2,3,13,18,20,21],[0,1,2,6,10,16,17,18],[2,4,7,12,14,16,20,22],[0,3,4,7,8,13,16,20],[1,4,6,8,13,15,16,17],[2,5,9,10,14,19,21,23],[3,9,10,13,15,18,21,23],[7,10,16,17,18,19,21,23],[2,5,6,7,14,15,20,23],[3,4,5,6,7,10,13,15],[4,5,7,15,16,17,20,21],[0,1,2,3,5,14,17,23],[1,2,3,10,13,15,17,22],[0,2,3,7,16,17,21,22],[2,5,11,12,13,14,16,23],[3,8,10,11,13,14,15,16],[7,8,12,13,14,16,17,21],[4,8,9,10,18,19,21,22],[0,9,12,18,19,20,21,23],[1,6,9,10,11,18,19,23],[4,6,7,8,15,18,20,22],[0,4,5,6,7,12,19,20],[1,4,5,6,9,11,15,20],[0,1,3,4,8,17,18,22],[0,1,2,12,17,19,20,22],[0,1,2,3,6,9,11,22],[4,8,11,12,13,16,18,22],[0,8,11,12,14,16,19,20],[1,6,8,9,11,12,13,14],[1,2,4,8,10,17,19,23],[1,3,10,12,17,18,20,23],[0,3,6,11,17,18,21,23],[2,4,6,7,8,12,13,23],[3,6,7,8,10,12,14,20],[6,8,11,14,15,17,20,21],[0,2,3,4,8,9,21,23],[2,3,9,10,12,20,21,22],[2,6,10,11,17,19,21,22],[2,4,8,11,15,16,20,23],[3,4,5,10,11,12,16,20],[4,5,6,11,12,13,17,21],[1,5,10,14,17,18,19,22],[0,1,13,15,17,18,19,23],[0,1,3,7,9,16,18,23],[5,6,7,12,13,14,18,22],[0,6,7,8,13,14,15,19],[1,7,8,9,14,15,16,20],[0,3,5,9,14,18,21,22],[0,2,9,13,15,19,21,22],[1,2,7,9,10,16,19,22],[5,11,14,15,16,18,20,22],[0,4,5,11,13,15,16,19],[1,4,5,7,9,12,13,16],[0,2,3,10,18,19,22,23],[1,2,9,17,18,21,22,23],[2,6,7,11,16,18,22,23],[0,3,6,7,10,11,16,19],[1,9,12,13,15,17,20,21],[0,1,3,9,10,17,19,21],[2,12,13,15,18,20,22,23],[0,3,4,5,8,10,14,19],[1,4,5,8,9,14,17,21],[4,5,6,7,8,11,14,16],[6,7,11,12,13,15,16,20],[4,5,8,12,13,14,15,20],[3,8,10,14,17,21,22,23],[0,2,10,12,13,17,21,23],[1,2,3,10,11,16,21,23],[6,8,13,14,16,20,22,23],[0,4,6,10,12,13,14,16],[1,4,11,13,14,16,20,21],[7,8,11,12,14,15,22,23],[0,5,7,8,10,11,12,13],[1,5,8,11,12,15,16,21],[0,1,8,9,14,19,22,23],[0,1,9,10,12,13,18,22],[0,1,11,16,18,19,21,22],[2,3,4,5,10,17,18,21],[2,3,15,17,19,20,21,23],[2,3,6,7,9,10,17,23],[2,4,5,6,13,16,18,20],[3,4,6,14,15,16,19,20],[4,6,7,9,13,14,17,20],[2,4,5,7,11,12,15,18],[3,5,7,8,11,15,19,20],[5,6,7,8,9,12,15,17],[0,1,2,4,5,9,18,19],[1,3,9,15,18,19,20,22],[0,6,7,9,17,18,19,22],[1,3,4,5,9,10,22,23],[0,1,2,9,10,15,20,23],[0,1,2,6,7,19,21,23],[4,5,7,11,13,20,22,23],[0,4,7,10,11,14,15,20],[1,4,6,7,12,14,15,21],[0,4,5,17,19,21,22,23],[0,10,15,17,18,20,21,22],[1,3,6,7,10,18,21,22],[4,5,6,12,15,16,22,23],[0,5,6,8,10,15,16,20],[1,5,6,7,8,13,20,21],[1,2,3,8,9,10,14,18],[1,2,3,9,12,13,19,23],[0,2,9,11,16,17,19,23],[2,7,8,11,13,14,18,20],[3,4,7,11,12,13,14,19],[4,9,11,12,14,15,16,17],[0,2,8,14,17,18,19,21],[3,12,13,17,18,19,21,22],[3,9,10,11,16,17,18,22],[2,6,8,12,14,15,16,18],[3,5,6,8,12,13,16,19],[5,8,9,11,13,16,17,20],[0,2,7,8,10,14,16,23],[3,7,10,12,13,16,22,23],[11,13,15,16,17,21,22,23],[2,8,9,12,14,17,20,23],[3,4,8,9,10,12,13,17],[3,4,8,11,16,17,19,21],[1,2,8,13,14,15,21,23],[1,3,5,10,12,13,14,21],[0,5,10,11,14,16,17,21],[2,3,6,8,11,14,19,23],[2,3,6,10,11,12,13,18],[2,11,12,16,17,18,20,21],[0,4,5,7,10,16,18,22],[0,7,15,16,19,20,22,23],[1,6,7,9,13,15,22,23],[4,5,9,12,17,18,20,22],[0,4,8,9,15,17,19,20],[1,3,4,6,7,8,9,19],[1,4,5,13,15,18,21,22],[0,1,5,14,15,19,20,21],[0,1,5,6,7,9,10,14],[3,4,5,6,11,18,19,22],[0,2,6,11,15,18,19,20],[1,2,6,7,9,12,18,20],[4,5,8,10,13,16,21,23],[10,12,14,15,16,20,21,23],[6,7,10,11,13,14,21,23],[4,5,8,9,11,12,19,23],[8,9,10,11,12,15,18,20],[6,7,8,11,12,18,19,21],[3,4,5,6,8,17,20,23],[2,4,6,10,12,15,17,20],[2,3,4,6,7,11,20,21],[0,1,4,5,7,8,15,23],[1,5,7,10,12,15,20,22],[0,5,6,7,11,15,21,22],[2,10,13,14,16,18,21,22],[0,3,13,14,16,19,21,23],[1,9,10,13,14,16,17,23],[2,9,11,12,14,18,19,22],[0,3,8,9,11,13,18,19],[1,8,9,12,16,17,18,19],[2,3,6,14,17,18,20,22],[0,2,3,4,6,13,17,19],[1,2,3,4,9,16,17,20],[0,1,2,7,14,15,18,22],[0,1,3,5,7,13,19,22],[0,1,5,9,15,16,17,22],[1,2,5,7,10,13,18,23],[1,3,7,10,14,15,19,23],[0,7,9,14,15,17,21,23],[2,3,5,9,11,18,20,23],[2,3,4,9,10,11,15,19],[2,4,7,9,12,17,19,21],[0,2,5,15,16,18,21,23],[3,5,10,15,16,19,21,22],[5,7,9,10,13,17,21,22],[2,5,6,12,17,18,19,23],[3,6,8,10,15,17,18,19],[3,7,8,9,17,18,20,21],[1,4,7,8,10,13,14,22],[0,1,7,12,13,14,20,23],[0,1,6,11,14,15,16,23],[3,4,8,9,11,14,20,22],[0,2,4,9,11,12,13,20],[1,2,4,6,11,12,16,19],[0,4,8,14,15,16,21,22],[0,5,12,13,16,20,21,22],[1,5,6,10,11,13,16,22],[4,6,8,12,14,17,19,22],[0,6,8,12,13,17,18,20],[1,3,6,8,11,16,18,20],[0,5,10,13,14,15,22,23],[1,5,7,14,16,21,22,23],[5,6,9,11,14,17,22,23],[0,6,9,10,11,13,15,17],[1,3,7,12,16,19,20,21],[0,1,7,10,13,15,16,21],[3,5,12,14,19,20,22,23],[0,2,4,8,10,13,15,18],[1,2,4,7,8,16,18,21],[2,4,6,8,9,11,17,18],[3,6,9,11,12,17,19,20],[2,3,4,8,12,18,19,20],[2,4,7,10,15,21,22,23],[0,3,5,7,10,20,21,23],[1,5,6,10,15,17,21,23],[2,4,6,9,19,20,22,23],[0,3,4,6,9,10,18,20],[1,4,6,17,18,19,20,21],[0,1,2,4,13,16,22,23],[0,1,3,10,14,16,20,22],[0,1,6,13,14,17,21,22],[2,3,4,11,12,17,22,23],[0,2,3,8,10,11,17,20],[1,2,3,6,8,12,17,21],[5,7,8,10,14,15,18,21],[5,7,12,13,15,19,21,23],[5,7,9,10,11,15,16,23],[5,6,8,9,14,18,19,20],[4,6,9,12,13,15,18,19],[4,7,9,11,16,18,19,20],[0,1,5,8,13,14,16,18],[1,12,13,14,15,16,19,22],[0,7,9,11,13,14,16,22],[3,5,8,11,12,14,17,18],[2,8,11,12,13,15,17,19],[2,3,7,8,9,11,12,16],[1,8,10,15,16,18,22,23],[0,1,5,10,12,16,19,23],[0,1,5,9,11,13,21,23],[8,11,17,18,19,20,22,23],[0,4,10,11,12,17,18,19],[1,3,4,9,11,12,18,21],[0,7,8,13,18,21,22,23],[0,7,10,12,14,19,21,22],[1,9,10,11,14,15,21,22],[3,6,8,9,12,18,22,23],[0,2,6,8,9,10,12,19],[1,2,8,9,11,19,20,21],[1,2,4,5,10,14,15,16],[1,3,5,13,15,16,20,23],[0,5,6,7,13,16,17,23],[2,4,5,11,14,17,19,20],[3,4,11,13,15,17,18,20],[3,4,6,7,12,16,17,18],[0,2,4,5,7,13,14,21],[3,7,13,14,15,20,21,22],[6,7,10,14,15,16,17,22],[2,3,4,5,6,9,12,14],[2,3,6,8,9,13,15,20],[2,6,7,8,16,17,19,20],[0,2,4,5,6,10,11,23],[3,6,10,11,15,20,22,23],[6,7,12,17,20,21,22,23],[2,4,5,9,13,15,17,23],[3,5,9,10,14,15,17,20],[3,5,6,7,14,17,19,21],[2,3,4,5,7,16,19,23],[2,3,7,10,15,16,18,20],[2,6,7,13,15,17,18,21],[1,2,4,5,12,20,21,23],[1,3,4,8,10,15,20,21],[0,4,6,7,8,10,17,21],[0,6,8,10,11,14,18,22],[0,6,11,12,13,19,22,23],[1,9,11,12,16,20,22,23],[8,9,13,14,15,17,18,22],[0,5,9,12,13,14,17,19],[1,3,5,9,11,14,16,19],[3,7,8,14,16,18,19,22],[0,2,7,12,13,16,18,19],[1,2,9,11,13,15,16,18],[1,8,12,14,18,20,21,22],[0,1,4,8,12,13,19,21],[0,1,4,8,9,10,11,16],[2,6,8,10,18,20,21,23],[3,4,6,10,12,19,21,23],[4,9,10,11,17,20,21,23],[2,7,8,9,15,18,19,23],[3,5,7,9,10,12,18,19],[5,9,11,15,17,18,19,21],[2,3,8,13,16,17,18,23],[2,3,10,12,14,16,17,19],[2,3,9,11,13,14,17,21],[0,1,2,8,11,12,18,23],[1,3,8,10,11,12,19,22],[0,8,9,11,12,17,21,22],[4,5,6,10,14,20,21,22],[0,4,6,13,15,20,21,23],[1,4,6,7,10,16,20,23],[4,5,7,9,14,15,19,22],[0,5,7,9,13,15,18,20],[1,5,6,7,15,16,18,19],[3,4,5,13,14,16,17,22],[0,2,13,14,15,16,17,20],[1,2,3,6,7,13,14,16],[0,1,4,5,11,12,14,22],[0,1,8,11,13,15,20,22],[0,1,6,7,8,12,16,22],[1,5,8,10,11,14,20,23],[1,4,10,11,12,13,15,23],[0,4,7,11,12,16,21,23],[5,8,14,15,16,17,19,23],[5,10,12,13,15,16,17,18],[3,5,7,11,13,16,18,21],[3,5,7,8,9,13,14,23],[2,7,9,10,12,13,14,15],[2,7,11,14,15,16,19,21],[0,5,6,8,12,14,21,23],[6,8,10,12,13,15,21,22],[7,8,10,11,16,20,21,22],[1,2,4,10,11,18,20,22],[0,1,3,4,11,19,20,23],[0,1,4,6,9,12,17,23],[2,4,15,16,17,18,19,22],[0,3,5,16,17,18,19,20],[1,3,5,6,9,13,17,18],[2,3,4,7,9,13,18,22],[0,2,3,7,9,14,19,20],[1,2,6,9,14,15,17,19],[0,2,4,6,12,18,21,22],[0,3,6,8,19,20,21,22],[1,6,8,9,10,17,20,22],[0,4,8,10,12,20,22,23],[1,4,6,8,11,21,22,23],[4,7,8,9,16,17,22,23],[0,7,9,10,12,16,17,20],[1,3,6,11,13,15,19,21],[0,1,6,10,11,12,20,21],[3,4,8,13,15,19,22,23],[0,2,5,10,12,14,18,20],[1,2,5,6,11,14,18,21],[2,5,7,9,14,16,17,18],[3,7,9,13,15,16,17,19],[2,3,5,13,14,15,18,19],[5,10,11,12,18,21,22,23],[0,8,10,11,15,19,21,23],[1,7,8,9,10,12,21,23],[5,9,13,16,18,19,22,23],[0,9,10,14,15,16,18,19],[1,7,9,13,14,18,19,21],[3,5,7,15,17,18,22,23],[0,2,5,7,10,15,17,19],[1,2,3,5,7,9,15,21],[0,1,5,6,18,20,22,23],[0,1,4,6,10,15,19,22],[0,1,4,7,9,20,21,22],[2,4,8,10,11,12,14,21],[3,8,11,12,13,20,21,23],[6,8,10,11,12,16,17,23],[2,4,8,9,13,14,16,19],[3,9,12,13,14,16,18,20],[6,11,13,14,16,17,18,19],[2,3,4,7,8,14,15,17],[2,3,5,7,12,13,17,20],[2,3,5,6,11,15,16,17],[0,1,2,4,6,8,14,20],[1,3,4,6,12,13,20,22],[0,4,6,11,16,17,20,22],[1,2,6,10,12,14,22,23],[0,1,3,6,8,10,13,23],[0,1,8,16,17,20,21,23],[2,7,13,14,17,19,22,23],[0,3,7,10,13,14,17,18],[1,3,14,15,16,17,18,21],[0,2,11,14,20,21,22,23],[0,3,4,10,11,13,21,22],[1,4,10,12,16,17,21,22],[2,3,9,14,15,16,22,23],[0,2,3,5,9,10,13,16],[1,2,5,13,16,17,19,21],[1,4,5,6,8,10,12,18],[1,6,8,12,15,19,20,23],[0,6,7,8,9,11,20,23],[4,5,7,8,13,17,18,19],[7,12,14,15,17,18,19,20],[3,6,7,9,11,14,15,18],[0,4,5,8,11,18,20,21],[4,11,12,15,19,20,21,22],[4,6,7,9,10,11,12,22],[3,4,5,8,9,15,16,18],[2,5,9,12,15,16,19,20],[2,5,6,7,9,11,13,19],[2,4,5,8,14,18,22,23],[0,3,10,12,13,15,19,20],[1,6,7,9,11,16,17,21]]
+
+const octadNames = octadList.map(x => JSON.stringify(x))
+
+var octadColours = []
+
+const gen = [ 22, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23 ]
+const gen1 = [ 0, 1, 8, 4, 18, 5, 9, 22, 6, 16, 17, 10, 3, 12, 15, 20, 2, 7, 13, 14, 21, 19, 11, 23 ]
+
+
+
+
+//GENERAL GROUP FUNCTIONS
+
+function composeSequence(seq) {
+	if (seq.length == 1) {
+		return seq[0] }
+	if (seq.length > 1) {
+		return [...Array(seq[0].length).keys()]
+			.map(n => seq[0][composeSequence(seq.slice(1))[n]]) }
+	}
+
+function inv(perm) {
+	return [...Array(perm.length).keys()].map(m => perm.indexOf(m))
+	}
+
+function conjugate(base, power) {
+	return composeSequence([power, base, inv(power)])
+	}
+
+function fisherYatesShuffle(arr) {
+  	for (let i = arr.length - 1; i > 0; i--) {
+    	const j = Math.floor(Math.random() * (i + 1));
+    	[arr[i], arr[j]] = [arr[j], arr[i]];
+  	}
+  	return arr;
+}
+
+function randomPerm() {
+  return composeSequence(Math.floor(Math.random() * (10^10))
+    .toString(theGroups[groupCounter]["generators"].length)
+    .split('')
+    .map(x => theGroups[groupCounter]["generators"][Number(x)]));
+}
+
+
+//GENERATING THE HTML
+
+document.getElementById("markInstructions").addEventListener("click", resetMatrix)
+
+var hasTried = false
+
+var testMatrix = document.getElementById("test_matrix")
+var testSolutions = document.getElementById("test_solutions")
+
+function makeMOG(matrixCell) {
+  for (let i = 0; i < 24; i++) {
+    matrixCell.buttons[bodily1[i]] = document.createElement("BUTTON");
+    var x = matrixCell.buttons[bodily1[i]];
+    matrixCell.appendChild(x);
+    x.buttonID = bodily1[i];
+    //x.textContent = x.buttonID.toString();
+    x.textContent = " "
+    if (theGroups[groupCounter]["activePoints"].includes(bodily1[i])) {
+      x.style.background = "white";
+      x.addEventListener("click", octadHunt);
+    }
+    else {
+      x.style.background = "hsla(0, 0%, 0%, 0)"
+    }
+  }
+}
+
+function octadHunt() {
+  if (this.parentNode.needErase) {
+    for (let i = 0; i < 24; i++) {
+      if (theGroups[groupCounter]["activePoints"].includes(i)) {
+        var x = this.parentNode.buttons[i];
+        //x.textContent = x.buttonID.toString();
+        x.textContent = " "
+        x.style.background = "white";
+        x.style.color = "black";
+      }
+    }
+    this.parentNode.needErase = false;
+  }
+
+  if (!this.parentNode.quintleCounter.includes(this.buttonID)) {
+    this.parentNode.quintleCounter.push(this.buttonID);
+    this.style.background = "grey";
+    //console.log(this.parentNode.quintleCounter)
+  }
+  if (this.parentNode.quintleCounter.length == 5) {
+    var clickedOctad = findOctad(this.parentNode.quintleCounter);
+    var permutedOctad = clickedOctad.map(n => this.parentNode.automorphism[n]).toSorted((X, Y) => X - Y);
+
+    var clickedNad = clickedOctad.filter(n => theGroups[groupCounter]["activePoints"].includes(n));
+    var permutedNad = permutedOctad.filter(n => theGroups[groupCounter]["activePoints"].includes(n));
+
+    for (let i = 0; i < clickedNad.length; i++) {
+      var y = this.parentNode.buttons[clickedNad[i]];
+      y.style.background = "hsl("
+      .concat(octadColours[octadNames.indexOf(JSON.stringify(clickedOctad))][0].toString(), 
+        ", ",
+        octadColours[octadNames.indexOf(JSON.stringify(clickedOctad))][1].toString(), 
+        "%, 90%)");
+      
+      var z = this.parentNode.buttons[permutedNad[i]];
+      z.textContent = "\u{25A0}";
+      z.style.color = "hsl("
+      .concat(octadColours[octadNames.indexOf(JSON.stringify(permutedOctad))][0].toString(), 
+        ", ",
+        octadColours[octadNames.indexOf(JSON.stringify(permutedOctad))][1].toString(), 
+        "%, 45%)");
+    }
+    this.parentNode.quintleCounter = [...theGroups[groupCounter]["stabilisedPoints"]];
+    this.parentNode.needErase = true;
+  }
+}
+
+function newTry() {
+  if (!hasTried) {
+    var y = document.getElementById("markInstructions");
+    document.getElementById("rightAnswer").style.backgroundColor = "lightgreen"
+    if (this.parentNode.id != "rightAnswer") {
+      this.parentNode.style.backgroundColor = "red"
+      this.textContent = "X"
+      y.textContent = "Click here to try again."
+      y.addEventListener("click", resetMatrix)
+    }
+    if (this.parentNode.id == "rightAnswer") {
+      y.textContent = "Click here to proceed."
+      y.addEventListener("click", progressReset)
+    }
+    hasTried = true
+  }
+}
+
+function progressReset() {
+  groupCounter++;
+  resetMatrix()
+}
+
+function resetMatrix() {
+
+if (groupCounter >= theGroups.length) {
+  window.open("./credits.html")
+}
+else {
+  octadColours = [...Array(360*25).keys()].map(n => [Math.floor(n/25), 75 + (n % 25)])
+
+  fisherYatesShuffle(octadColours)
+  octadColours = octadColours.slice(0, 759)
+
+    document.getElementById("test_matrix").replaceChildren()
+    document.getElementById("test_solutions").replaceChildren()
+    document.getElementById("matrixInstructions").innerHTML = theGroups[groupCounter]["introText"]
+    document.getElementById("markInstructions").textContent = "Click against the letter under the bit of pattern that is quite right."
+    document.getElementById("markInstructions").removeEventListener("click", resetMatrix)
+    document.getElementById("markInstructions").removeEventListener("click", progressReset)
+
+  hasTried = false
+
+  testMatrix = document.getElementById("test_matrix")
+  testSolutions = document.getElementById("test_solutions")
+
+  testMatrix.cells = []
+  testSolutions.wrappers = []
+  testSolutions.labels = []
+  testSolutions.cells = []
+
+  for (let i = 0; i < 8; i++) { 
+    testMatrix.cells[i] = document.createElement("div");
+    var x = testMatrix.cells[i];
+
+    testMatrix.appendChild(x);
+    x.setAttribute("class", "buttoncontainer");
+    x.id = ["lawfulGood", "neutralGood", "chaoticGood", "lawfulNeutral", "trueNeutral", "chaoticNeutral", "lawfulEvil", "neutralEvil"][i]
+
+    x.buttons = [];
+    x.stabilised = [];
+    x.automorphism = gen;
+    x.quintleCounter = [...theGroups[groupCounter]["stabilisedPoints"]];
+    x.needErase = false;
+    makeMOG(x)
+  }
+
+  testMatrix.cells[8] = document.createElement("div");
+  testMatrix.appendChild(testMatrix.cells[8]);
+  testMatrix.cells[8].style.justifyContent = "center";
+  testMatrix.cells[8].style.alignContent = "center";
+  testMatrix.cells[8].textContent = "?"
+
+  var shuffledConjugacyNumbers = fisherYatesShuffle([...Array(theGroups[groupCounter]["conjugacies"].length).keys()])
+
+  document.getElementById("lawfulGood").automorphism = theGroups[groupCounter]["conjugacies"][shuffledConjugacyNumbers[0]][0]
+  document.getElementById("trueNeutral").automorphism = theGroups[groupCounter]["conjugacies"][shuffledConjugacyNumbers[1]][0]
+  var LG = document.getElementById("lawfulGood").automorphism
+  var TN = document.getElementById("trueNeutral").automorphism
+
+  var commutantPower = randomPerm()
+  document.getElementById("lawfulNeutral").automorphism = conjugate(theGroups[groupCounter]["conjugacies"][shuffledConjugacyNumbers[2]][0], commutantPower)
+  //document.getElementById("lawfulNeutral").automorphism = m24["conjugacies"][shuffledConjugacyNumbers[2]][0]
+  var LN = document.getElementById("lawfulNeutral").automorphism
+
+  var arbitraryRepresentativeCommuter = theGroups[groupCounter]["conjugacies"][shuffledConjugacyNumbers[2]][1][Math.floor(Math.random() * theGroups[groupCounter]["conjugacies"][shuffledConjugacyNumbers[2]][1].length)]
+  document.getElementById("neutralGood").automorphism = conjugate(arbitraryRepresentativeCommuter, commutantPower)
+  //document.getElementById("neutralGood").automorphism = arbitraryRepresentativeCommuter
+  var NG = document.getElementById("neutralGood").automorphism
+
+  console.log("A and B commuting? ", JSON.stringify(composeSequence[LN, NG]) == JSON.stringify(composeSequence[NG, LN]))
+
+  document.getElementById("lawfulEvil").automorphism = composeSequence([document.getElementById("lawfulGood").automorphism, document.getElementById("lawfulNeutral").automorphism])
+  document.getElementById("neutralEvil").automorphism = composeSequence([document.getElementById("neutralGood").automorphism, document.getElementById("trueNeutral").automorphism])
+  var LE = document.getElementById("lawfulEvil").automorphism
+  var NE = document.getElementById("neutralEvil").automorphism
+
+  document.getElementById("chaoticGood").automorphism = composeSequence([document.getElementById("lawfulGood").automorphism, document.getElementById("neutralGood").automorphism])
+  document.getElementById("chaoticNeutral").automorphism = composeSequence([document.getElementById("lawfulNeutral").automorphism, document.getElementById("trueNeutral").automorphism])
+  var CG = document.getElementById("chaoticGood").automorphism
+  var CN = document.getElementById("chaoticNeutral").automorphism
+
+  console.log("XY and ZW equal? ", JSON.stringify(composeSequence([LE, NE])) == JSON.stringify(composeSequence([CG, CN])))
+
+  var answerAutomorphismsIDs = fisherYatesShuffle([...Array(theGroups[groupCounter]["conjugacies"].length).keys()].concat([...Array(theGroups[groupCounter]["conjugacies"].length).keys()]))
+    .slice(0, 7)
+    .map(n => [theGroups[groupCounter]["conjugacies"][n][0], "wrong".concat(n.toString())])
+  answerAutomorphismsIDs.push([composeSequence([LE, NE]), "rightAnswer"])
+  fisherYatesShuffle(answerAutomorphismsIDs)
+
+  for (let i = 0; i < 8; i++) { 
+    testSolutions.wrappers[i] = document.createElement("div");
+    testSolutions.cells[i] = document.createElement("div");
+    testSolutions.labels[i] = document.createElement("p");
+    var y = testSolutions.wrappers[i];
+    var x = testSolutions.cells[i];
+    var z = testSolutions.labels[i];
+
+    testSolutions.appendChild(y);
+    y.appendChild(x);
+    x.setAttribute("class", "buttoncontainer");
+    y.appendChild(z)
+    y.id = answerAutomorphismsIDs[i][1]
+
+    x.buttons = [];
+    x.stabilised = [];
+    x.automorphism = [...answerAutomorphismsIDs[i][0]];
+    if (JSON.stringify(x.automorphism) == JSON.stringify(composeSequence([LE, NE])) && answerAutomorphismsIDs[i][1] != "rightAnswer") {
+      x.automorphism = composeSequence([x.automorphism, theGroups[groupCounter]["conjugacies"][0][0]])
+    }
+    x.quintleCounter = [...theGroups[groupCounter]["stabilisedPoints"]];
+    x.needErase = false;
+
+    z.textContent = ["A", "B", "C", "D", "E", "F", "G", "H"][i];
+    z.addEventListener("click", newTry);
+    makeMOG(x)
+  }
+
+  console.log([testSolutions.wrappers.map(x => x.id)])
+  console.log("CHAOTIC GOOD:", JSON.stringify(CG))
+  console.log("CHAOTIC NEUTRAL:", JSON.stringify(CN))
+  console.log("ANSWER:", JSON.stringify(document.getElementById("rightAnswer").children[0].automorphism))
+}
+}
+
+</script>
+
+</body>
+</html>
