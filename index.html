@@ -370,11 +370,11 @@ function octadHunt() {
 
     for (let i = 0; i < clickedNad.length; i++) {
       var y = this.parentNode.buttons[clickedNad[i]];
-      y.style.background = "hsl("
-      .concat(octadColours[octadNames.indexOf(JSON.stringify(clickedOctad))][0].toString(), 
-        ", ",
-        octadColours[octadNames.indexOf(JSON.stringify(clickedOctad))][1].toString(), 
-        "%, 90%)");
+      y.style.background = "white" //"hsl("
+      //.concat(octadColours[octadNames.indexOf(JSON.stringify(clickedOctad))][0].toString(), 
+        //", ",
+        //octadColours[octadNames.indexOf(JSON.stringify(clickedOctad))][1].toString(), 
+        //"%, 90%)");
       
       var z = this.parentNode.buttons[permutedNad[i]];
       z.textContent = "\u{25A0}";
