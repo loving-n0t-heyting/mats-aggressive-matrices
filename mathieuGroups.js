@@ -36721,7 +36721,7 @@ conjugacies:
 const m9 = {
 activePoints: [19, 17, 9, 13, 7, 16, 20, 11, 6],
 stabilisedPoints: [23, 22, 10],
-introText: "The sequence is sectioned into tiers, not just of complexity, but of <em>symmetry</em> in the patterns exhibited. They are now becoming more symmetrical.",
+introText: "The sequence is sectioned into tiers, not just of complexity, but of <em>symmetry</em> in the patterns exhibited.",
 generators: [ [ 18, 4, 15, 8, 0, 12, 7, 13, 3, 20, 10, 6, 2, 11, 21, 5, 9, 17, 1, 16, 19, 14, 22, 23 ], 
   [ 15, 12, 4, 21, 5, 18, 20, 9, 14, 11, 10, 19, 0, 16, 8, 1, 6, 17, 2, 7, 13, 3, 22, 23 ], 
   [ 12, 3, 14, 1, 5, 4, 17, 13, 18, 9, 10, 7, 21, 20, 8, 0, 19, 16, 2, 6, 11, 15, 22, 23 ] ], 
