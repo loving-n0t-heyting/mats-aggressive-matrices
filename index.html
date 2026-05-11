@@ -368,9 +368,18 @@ function octadHunt() {
     var clickedNad = clickedOctad.filter(n => theGroups[groupCounter]["activePoints"].includes(n));
     var permutedNad = permutedOctad.filter(n => theGroups[groupCounter]["activePoints"].includes(n));
 
+    for (let i = theGroups[groupCounter]["stabilisedPoints"].length; i < this.parentNode.quintleCounter.length; i++) {
+      var y = this.parentNode.buttons[this.parentNode.quintleCounter[i]];
+      y.style.background = "hsl("
+      .concat(octadColours[octadNames.indexOf(JSON.stringify(clickedOctad))][0].toString(), 
+        ", ",
+        octadColours[octadNames.indexOf(JSON.stringify(clickedOctad))][1].toString(), 
+        "%, 90%)");
+    }
+    
     for (let i = 0; i < clickedNad.length; i++) {
-      var y = this.parentNode.buttons[clickedNad[i]];
-      y.style.background = "white" //"hsl("
+      //var y = this.parentNode.buttons[clickedNad[i]];
+      //y.style.background = "hsl("
       //.concat(octadColours[octadNames.indexOf(JSON.stringify(clickedOctad))][0].toString(), 
         //", ",
         //octadColours[octadNames.indexOf(JSON.stringify(clickedOctad))][1].toString(), 
