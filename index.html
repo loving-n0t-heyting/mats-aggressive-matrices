@@ -427,7 +427,7 @@ if (groupCounter >= theGroups.length) {
   window.open("./credits.html")
 }
 else {
-  octadColours = [...Array(360*25).keys()].map(n => [Math.floor(n/25), 75 + (n % 25)])
+  octadColours = [...Array(360*3).keys()].map(n => [Math.floor(n/3), 75 + ((n % 3)*10)])
 
   fisherYatesShuffle(octadColours)
   octadColours = octadColours.slice(0, 759)
