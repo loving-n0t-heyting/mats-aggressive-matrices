@@ -36765,7 +36765,7 @@ conjugacies:
 const m8 = {
 activePoints: [17, 9, 13, 7, 16, 20, 11, 6],
 stabilisedPoints: [23, 22, 10, 19],
-introText: "The pattern involved in this problem, like those in later problems, is difficult to portray statically in so small a space and in fewer than four dimensions. In lieu of such a static depiction, you may navigate any bit of the pattern, or any of the candidate solutions, using the interactive clickable interface in the corresponding pane of the matrix or two lower rows.",
+introText: "The pattern involved in this problem, like those in later problems, is difficult to fittingly portray statically in so small a space and in fewer than nine dimensions. In lieu of such a static depiction, you may navigate any bit of the pattern, or any of the candidate solutions, using the interactive clickable interface in the corresponding pane of the matrix or two lower rows.",
 generators: [ [ 18, 4, 3, 2, 21, 15, 9, 17, 12, 7, 10, 13, 5, 16, 1, 8, 20, 6, 0, 19, 11, 14, 22, 23 ], 
   [ 3, 15, 18, 0, 5, 14, 16, 11, 4, 13, 10, 6, 1, 17, 8, 21, 7, 20, 2, 19, 9, 12, 22, 23 ] ], 
 conjugacies: 
