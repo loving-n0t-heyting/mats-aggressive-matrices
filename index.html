@@ -488,24 +488,27 @@ else {
   //document.getElementById("neutralGood").automorphism = arbitraryRepresentativeCommuter
   var NG = document.getElementById("neutralGood").automorphism
 
-  console.log("A and B commuting? ", JSON.stringify(composeSequence[LN, NG]) == JSON.stringify(composeSequence[NG, LN]))
+  //console.log("A and B commuting? ", JSON.stringify(composeSequence[LN, NG]) == JSON.stringify(composeSequence[NG, LN]))
+  
+  var orderFunctions = [(x => x), (x => x.toReversed())]
+  var composeOrder = orderFunctions[Math.floor(Math.random()*2)]
 
-  document.getElementById("lawfulEvil").automorphism = composeSequence([document.getElementById("lawfulGood").automorphism, document.getElementById("lawfulNeutral").automorphism])
-  document.getElementById("neutralEvil").automorphism = composeSequence([document.getElementById("neutralGood").automorphism, document.getElementById("trueNeutral").automorphism])
+  document.getElementById("lawfulEvil").automorphism = composeSequence(composeOrder([document.getElementById("lawfulGood").automorphism, document.getElementById("lawfulNeutral").automorphism]))
+  document.getElementById("neutralEvil").automorphism = composeSequence(composeOrder([document.getElementById("neutralGood").automorphism, document.getElementById("trueNeutral").automorphism]))
   var LE = document.getElementById("lawfulEvil").automorphism
   var NE = document.getElementById("neutralEvil").automorphism
 
-  document.getElementById("chaoticGood").automorphism = composeSequence([document.getElementById("lawfulGood").automorphism, document.getElementById("neutralGood").automorphism])
-  document.getElementById("chaoticNeutral").automorphism = composeSequence([document.getElementById("lawfulNeutral").automorphism, document.getElementById("trueNeutral").automorphism])
+  document.getElementById("chaoticGood").automorphism = composeSequence(composeOrder([document.getElementById("lawfulGood").automorphism, document.getElementById("neutralGood").automorphism]))
+  document.getElementById("chaoticNeutral").automorphism = composeSequence(composeOrder([document.getElementById("lawfulNeutral").automorphism, document.getElementById("trueNeutral").automorphism]))
   var CG = document.getElementById("chaoticGood").automorphism
   var CN = document.getElementById("chaoticNeutral").automorphism
 
-  console.log("XY and ZW equal? ", JSON.stringify(composeSequence([LE, NE])) == JSON.stringify(composeSequence([CG, CN])))
+  console.log("XY and ZW equal? ", JSON.stringify(composeSequence(composeOrder([LE, NE]))) == JSON.stringify(composeSequence([CG, CN])))
 
   var answerAutomorphismsIDs = fisherYatesShuffle([...Array(theGroups[groupCounter]["conjugacies"].length).keys()].concat([...Array(theGroups[groupCounter]["conjugacies"].length).keys()]))
     .slice(0, 7)
     .map(n => [theGroups[groupCounter]["conjugacies"][n][0], "wrong".concat(n.toString())])
-  answerAutomorphismsIDs.push([composeSequence([LE, NE]), "rightAnswer"])
+  answerAutomorphismsIDs.push([composeSequence(composeOrder([LE, NE])), "rightAnswer"])
   fisherYatesShuffle(answerAutomorphismsIDs)
 
   for (let i = 0; i < 8; i++) { 
@@ -525,7 +528,7 @@ else {
     x.buttons = [];
     x.stabilised = [];
     x.automorphism = [...answerAutomorphismsIDs[i][0]];
-    if (JSON.stringify(x.automorphism) == JSON.stringify(composeSequence([LE, NE])) && answerAutomorphismsIDs[i][1] != "rightAnswer") {
+    if (JSON.stringify(x.automorphism) == JSON.stringify(composeSequence(composeOrder([LE, NE]))) && answerAutomorphismsIDs[i][1] != "rightAnswer") {
       x.automorphism = composeSequence([x.automorphism, theGroups[groupCounter]["conjugacies"][0][0]])
     }
     x.quintleCounter = [...theGroups[groupCounter]["stabilisedPoints"]];

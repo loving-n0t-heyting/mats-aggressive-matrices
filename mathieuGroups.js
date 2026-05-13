@@ -34936,7 +34936,7 @@ conjugacies:
 const m22 = {
 activePoints: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
 stabilisedPoints: [23, 22],
-introText: "You must be getting some of the hang of it by now. It may be instructive to compare the symmetries you have been exploiting here to those from Raven. Say, <a href='https://storage.googleapis.com/nostalgebraist.net/media/raven-e12.png'>the final matrix of the original series.<a>",
+introText: "You must be getting some of the hang of it by now. It may be instructive to compare the symmetries you have been exploiting here to those from Raven. Say, <a href='./raven-e12.png'>the final matrix of the original series.<a>",
 generators: [ [ 0, 2, 16, 8, 13, 10, 18, 21, 12, 9, 11, 20, 6, 1, 7, 17, 4, 14, 3, 5, 19, 15, 22, 23 ], 
   [ 14, 10, 16, 8, 11, 2, 12, 15, 18, 9, 13, 5, 3, 19, 7, 17, 4, 0, 6, 20, 1, 21, 22, 23 ], 
   [ 2, 16, 4, 5, 13, 19, 21, 6, 15, 9, 18, 11, 20, 0, 3, 10, 1, 7, 8, 14, 12, 17, 22, 23 ], 
@@ -36721,7 +36721,7 @@ conjugacies:
 const m9 = {
 activePoints: [19, 17, 9, 13, 7, 16, 20, 11, 6],
 stabilisedPoints: [23, 22, 10],
-introText: "The pattern involved in this problem, like those in later problems, is difficult to portray statically in so small a space and in fewer than four dimensions. In lieu of such a static depiction, you may navigate any bit of the pattern, or any of the candidate solutions, using the interactive clickable interface in the corresponding pane of the matrix or two lower rows. <br><br>The sequence will be sectioned into tiers, not just of complexity, but of <em>symmetry</em> in the patterns exhibited.",
+introText: "The pattern involved in this problem, like those in later problems, is difficult to fittingly portray statically in so small a space and in fewer than nine dimensions. In lieu of such a static depiction, you may navigate any bit of the pattern, or any of the candidate solutions, using the interactive clickable interface in the corresponding pane of the matrix or two lower rows. <br><br>The sequence will be sectioned into tiers, not just of complexity, but of <em>symmetry</em> in the patterns exhibited.",
 generators: [ [ 18, 4, 15, 8, 0, 12, 7, 13, 3, 20, 10, 6, 2, 11, 21, 5, 9, 17, 1, 16, 19, 14, 22, 23 ], 
   [ 15, 12, 4, 21, 5, 18, 20, 9, 14, 11, 10, 19, 0, 16, 8, 1, 6, 17, 2, 7, 13, 3, 22, 23 ], 
   [ 12, 3, 14, 1, 5, 4, 17, 13, 18, 9, 10, 7, 21, 20, 8, 0, 19, 16, 2, 6, 11, 15, 22, 23 ] ], 
